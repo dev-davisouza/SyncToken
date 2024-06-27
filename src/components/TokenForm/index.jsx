@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SubmitButton from "@/components/SubmitButton";
 import { useEffect, useState } from "react";
 import { ServiceBookModel } from "@/context/Model";
-import { Prioridades, Ações, dataMsg } from "@/context/Model";
+import { Prioridades, Ações, dataMsg, Status } from "@/context/Model";
 import { useParams } from "react-router-dom";
 
 const StyledLegend = styled.legend`
@@ -38,6 +38,10 @@ export default function TokenForm({ handleSubmit }) {
       })
         .then((resp) => resp.json())
         .then((data) => {
+          // Verifica e converte Status para array, se necessário
+          if (typeof data.Status === "string") {
+            data.Status = data.Status.split(","); // Converte para array
+          }
           setData(data);
         })
         .catch((err) => console.log(err));
@@ -52,11 +56,12 @@ export default function TokenForm({ handleSubmit }) {
         .then((data) => {
           let currentLength = data.length;
           let futureLength = currentLength + 1;
+          const newId = String(futureLength);
           setQueueLength(futureLength);
           setData((prevData) => ({
             ...prevData,
             N: futureLength,
-            id: toString(futureLength),
+            id: newId,
             Data: currentDate,
           }));
         })
@@ -66,6 +71,10 @@ export default function TokenForm({ handleSubmit }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // Converte data.Status para o formato de array
+    if (typeof data.Status === "string") {
+      data.Status = data.Status.split(",");
+    }
     handleSubmit(data, id);
   };
 
@@ -150,6 +159,30 @@ export default function TokenForm({ handleSubmit }) {
             {prioridade}
           </StyledOption>
         ))}
+      </Dropdown>
+
+      <Dropdown
+        label="Status:"
+        name="Status"
+        required
+        onChange={handleChange}
+        value={data.Status}
+      >
+        <StyledOption key="Selecione um estado" disabled selected value="">
+          Selecione um estado
+        </StyledOption>
+        {Status.map((item, index) => {
+          const key = Object.keys(item)[0]; // Obtém a chave como "stts_0", "stts_1", etc.
+          const [status, color] = item[key]; // Destrutura o array dentro do objeto
+
+          const status_color = item[key];
+
+          return (
+            <StyledOption value={status_color} key={index}>
+              {status}
+            </StyledOption>
+          );
+        })}
       </Dropdown>
 
       <SubmitButton type="submit">

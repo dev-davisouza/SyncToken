@@ -1,14 +1,29 @@
 {
   "fichas": [
     {
-      "id": "[object Undefined]",
+      "id": "1",
       "N": 1,
       "NIS_CPF": "123.456.789.02",
       "Nome": "Davi Souza de Oliveira",
       "Endereço": "Rua Benedito Vieira, S/N, Centro",
       "Ação": "Criação de cadastro",
       "Data": "2024-06-27",
-      "Prioridade": "Não"
+      "Prioridade": "Não",
+      "Status": "Em atendimento"
+    },
+    {
+      "id": "2",
+      "N": 2,
+      "NIS_CPF": "1222",
+      "Nome": "33334",
+      "Endereço": "Rua do desenvolvimento web, Centro, SN",
+      "Ação": "Criação de cadastro",
+      "Data": "2024-06-27",
+      "Prioridade": "Sim",
+      "Status": [
+        "A ser atendido",
+        "#ff0"
+      ]
     }
   ]
 }
