@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import GlobalStyles from "./components/GlobalStyles";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Links } from "./context/Links";
 import ServiceBook from "./pages/ServiceBook";
@@ -13,6 +13,7 @@ const AppContainer = styled.div`
   min-height: 100vh;
   display: flex;
   height: auto;
+  flex-direction: column;
 `;
 
 const MainContainer = styled.main`
@@ -20,8 +21,9 @@ const MainContainer = styled.main`
   flex: 1;
   gap: 24px;
   width: 100%;
-  margin: 0 auto 0 12px;
+  margin: auto;
   min-height: 100vh;
+  align-items: flex-start;
 `;
 
 function App() {
@@ -34,6 +36,10 @@ function App() {
           <Routes>
             <Route path={Links.HOME} element={<Queue />} />
             <Route path={Links.CRIAR_FICHA} element={<ServiceBook />} />
+            <Route
+              path={`${Links.CRIAR_FICHA}/:id//*`}
+              element={<ServiceBook />}
+            />
           </Routes>
         </MainContainer>
       </AppContainer>

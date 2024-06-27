@@ -1,9 +1,10 @@
 import { Input, Dropdown } from "@/components/Field";
 import styled from "styled-components";
-import Button from "@/components/Button";
+import SubmitButton from "@/components/SubmitButton";
 import { useEffect, useState } from "react";
 import { ServiceBookModel } from "@/context/Model";
 import { Prioridades, Ações, dataMsg } from "@/context/Model";
+import { useParams } from "react-router-dom";
 
 const StyledLegend = styled.legend`
   text-align: center;
@@ -18,7 +19,7 @@ const StyledOption = styled.option`
 `;
 
 export default function TokenForm({ handleSubmit }) {
-  // Neste caso eu evito erros no meu console quando eu passo um valor pré-definido como not undefined.
+  const { id } = useParams();
   const [data, setData] = useState({ ...ServiceBookModel });
   const [queueLength, setQueueLength] = useState(0);
 
@@ -28,30 +29,44 @@ export default function TokenForm({ handleSubmit }) {
   }, [currentDate]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/fichas", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log(data.length);
-        let currentLength = data.length;
-        let futureLength = currentLength + 1;
-        setQueueLength(futureLength);
-        setData((prevData) => ({
-          ...prevData,
-          N: futureLength,
-          id: futureLength,
-        }));
+    if (id) {
+      fetch(`http://localhost:5000/fichas/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
       })
-      .catch((err) => console.log(err));
-  }, []);
+        .then((resp) => resp.json())
+        .then((data) => {
+          setData(data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      fetch("http://localhost:5000/fichas", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          let currentLength = data.length;
+          let futureLength = currentLength + 1;
+          setQueueLength(futureLength);
+          setData((prevData) => ({
+            ...prevData,
+            N: futureLength,
+            id: toString(futureLength),
+            Data: currentDate,
+          }));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [id]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(data);
+    handleSubmit(data, id);
   };
 
   const handleChange = (e) => {
@@ -137,7 +152,9 @@ export default function TokenForm({ handleSubmit }) {
         ))}
       </Dropdown>
 
-      <Button type="submit">Criar ficha</Button>
+      <SubmitButton type="submit">
+        {id ? "Editar ficha" : "Criar ficha"}
+      </SubmitButton>
     </form>
   );
 }

@@ -18,7 +18,7 @@ const StyledButton = styled.button`
   margin-top: 25px;
 `;
 
-export default function Button({ type = "submit", children, onClick }) {
+export default function SubmitButton({ type = "submit", children, onClick }) {
   return (
     <StyledButton onClick={() => onClick} type={type}>
       {children}

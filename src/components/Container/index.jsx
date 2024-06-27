@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
 const StyledSection = styled.section`
   width: 80%;
   height: auto;
-  padding: 60px;
+  padding: 40px;
   margin: auto;
   max-width: 100%;
   background-color: #f5f5f5;

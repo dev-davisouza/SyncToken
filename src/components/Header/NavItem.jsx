@@ -3,7 +3,6 @@ import styled from "styled-components";
 const StyledNavItem = styled.li`
   font-size: 20px;
   line-height: 29px;
-  margin-bottom: 30px;
   cursor: pointer;
   color: black;
   display: flex;

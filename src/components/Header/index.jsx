@@ -4,26 +4,35 @@ import { FaBookBookmark, FaPeopleGroup } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Links } from "@/context/Links";
 
-const Aside = styled.aside`
+const Header = styled.header`
   padding: 25px;
   background-color: #f2f2f2;
-  width: 20%;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  min-height: 100vh;
+  /* flex-wrap: wrap; */
+  height: fit-content;
+  box-sizing: border-box;
+`;
+
+const StyledNav = styled.nav`
+  display: flex;
+  width: 100%;
 `;
 
 const StyledList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  width: fit-content;
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
 `;
 
 const Sidebar = () => {
   return (
-    <Aside>
-      <nav>
+    <Header>
+      <StyledNav>
         <StyledList>
           <NavItem icon={FaPeopleGroup}>
             <Link to={Links.HOME}>Fila</Link>
@@ -33,8 +42,8 @@ const Sidebar = () => {
             <Link to={Links.CRIAR_FICHA}>Livro de atendimento</Link>
           </NavItem>
         </StyledList>
-      </nav>
-    </Aside>
+      </StyledNav>
+    </Header>
   );
 };
 
