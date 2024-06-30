@@ -2,9 +2,9 @@ import { Input, Dropdown } from "@/components/Field";
 import styled from "styled-components";
 import SubmitButton from "@/components/SubmitButton";
 import { useEffect, useState } from "react";
-import { ServiceBookModel } from "@/context/Model";
-import { Prioridades, Ações, dataMsg, Status } from "@/context/Model";
+import { dataMsg } from "@/context/Model";
 import { useParams } from "react-router-dom";
+import { usePrioridades, useAcoes, useStatusChoices } from "./getters";
 
 const StyledLegend = styled.legend`
   text-align: center;
@@ -20,17 +20,20 @@ const StyledOption = styled.option`
 
 export default function TokenForm({ handleSubmit }) {
   const { id } = useParams();
-  const [data, setData] = useState({ ...ServiceBookModel });
-  const [queueLength, setQueueLength] = useState(0);
+  const [data, setData] = useState({});
+  const [currentDate, setCurrentDate] = useState("");
+  const Prioridades = usePrioridades();
+  const Ações = useAcoes();
+  const StatusChoices = useStatusChoices();
 
-  const currentDate = new Date().toISOString().split("T")[0];
   useEffect(() => {
-    setData((prevData) => ({ ...prevData, Data: currentDate }));
-  }, [currentDate]);
+    const today = new Date().toISOString().split("T")[0];
+    setCurrentDate(today);
+  }, []);
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/fichas/${id}`, {
+      fetch(`http://127.0.0.1:8000/pessoas/${id}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -38,15 +41,12 @@ export default function TokenForm({ handleSubmit }) {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          // Verifica e converte Status para array, se necessário
-          if (typeof data.Status === "string") {
-            data.Status = data.Status.split(","); // Converte para array
-          }
+          console.log(data);
           setData(data);
         })
         .catch((err) => console.log(err));
     } else {
-      fetch("http://localhost:5000/fichas", {
+      fetch("http://127.0.0.1:8000/pessoas/", {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -54,16 +54,7 @@ export default function TokenForm({ handleSubmit }) {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          let currentLength = data.length;
-          let futureLength = currentLength + 1;
-          const newId = String(futureLength);
-          setQueueLength(futureLength);
-          setData((prevData) => ({
-            ...prevData,
-            N: futureLength,
-            id: newId,
-            Data: currentDate,
-          }));
+          setData(data);
         })
         .catch((err) => console.log(err));
     }
@@ -71,10 +62,6 @@ export default function TokenForm({ handleSubmit }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Converte data.Status para o formato de array
-    if (typeof data.Status === "string") {
-      data.Status = data.Status.split(",");
-    }
     handleSubmit(data, id);
   };
 
@@ -171,18 +158,21 @@ export default function TokenForm({ handleSubmit }) {
         <StyledOption key="Selecione um estado" disabled selected value="">
           Selecione um estado
         </StyledOption>
-        {Status.map((item, index) => {
-          const key = Object.keys(item)[0]; // Obtém a chave como "stts_0", "stts_1", etc.
-          const [status, color] = item[key]; // Destrutura o array dentro do objeto
-
-          const status_color = item[key];
+        {StatusChoices.map(([value, label]) => (
+          <StyledOption value={value} key={value}>
+            {label}
+          </StyledOption>
+        ))}
+        {/*  {Object.entries(Status).map((key, color) => {
+          const [status, statusColor] = reducerColor(color);
+          const status_color = reducerColor(color);
 
           return (
-            <StyledOption value={status_color} key={index}>
+            <StyledOption value={status_color} key={key}>
               {status}
             </StyledOption>
           );
-        })}
+        })} */}
       </Dropdown>
 
       <SubmitButton type="submit">

@@ -7,10 +7,10 @@ export default function ServiceBook() {
   const navigate = useNavigate();
 
   function handleSubmit(data, id) {
-    const method = id ? "PUT" : "POST";
+    const method = id ? "PATCH" : "POST";
     const url = id
-      ? `http://localhost:5000/fichas/${id}`
-      : "http://localhost:5000/fichas";
+      ? `http://127.0.0.1:8000/pessoas/${id}/`
+      : "http://127.0.0.1:8000/pessoas/";
 
     fetch(url, {
       method: method,
@@ -21,7 +21,6 @@ export default function ServiceBook() {
     })
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         navigate(Links.HOME);
       });
   }

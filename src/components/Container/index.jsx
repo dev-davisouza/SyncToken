@@ -11,7 +11,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledSection = styled.section`
-  width: 80%;
+  width: 90%;
   height: auto;
   padding: 40px;
   margin: auto;

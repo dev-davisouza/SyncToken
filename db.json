@@ -9,7 +9,10 @@
       "Ação": "Criação de cadastro",
       "Data": "2024-06-27",
       "Prioridade": "Não",
-      "Status": "Em atendimento"
+      "Status": [
+        "Em atendimento",
+        "#2cd601"
+      ]
     },
     {
       "id": "2",
@@ -21,8 +24,8 @@
       "Data": "2024-06-27",
       "Prioridade": "Sim",
       "Status": [
-        "A ser atendido",
-        "#ff0"
+        "Atendimento encerrado",
+        "#cc0000"
       ]
     }
   ]

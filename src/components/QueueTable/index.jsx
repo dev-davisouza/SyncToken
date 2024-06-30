@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { FaRegTrashCan, FaPenToSquare } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
+import reducer from "@/reducer";
+import apiPath from "@/context/Api";
+import MiniBall from "@/components/MiniBall";
 
 const StyledTable = styled.table`
   font-size: 16px;
@@ -74,8 +77,9 @@ export default function QueueTable() {
   const [updateTrigger, setUpdateTrigger] = useState(false); // Estado para controlar atualizações
   const navigate = useNavigate();
 
+  /* Remove */
   function handleRemove(id) {
-    fetch(`http://localhost:5000/fichas/${id}`, {
+    fetch(`${apiPath}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
@@ -93,7 +97,7 @@ export default function QueueTable() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:5000/fichas", {
+    fetch(`http://127.0.0.1:8000/pessoas/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -101,8 +105,11 @@ export default function QueueTable() {
     })
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        setFichas(data);
+        const updatedData = data.map((ficha) => ({
+          ...ficha,
+          Status: reducer(ficha.Status),
+        }));
+        setFichas(updatedData);
       })
       .catch((err) => console.log(err));
   }, [updateTrigger]);
@@ -120,6 +127,7 @@ export default function QueueTable() {
             <Th>Ação</Th>
             <Th>Data</Th>
             <Th>Prioridade</Th>
+            <Th>Status</Th>
             <th></th>
           </tr>
         </thead>
@@ -131,8 +139,14 @@ export default function QueueTable() {
               <Td>{ficha.Nome}</Td>
               <Td>{ficha.Endereço} </Td>
               <Td>{ficha.Ação}</Td>
-              <Td>{ficha.Data}</Td>
+
+              {/* Atributo que vem do model do DRF para representar a Data*/}
+              <Td>{ficha.created_at}</Td>
+
               <Td>{ficha.Prioridade}</Td>
+              <Td>
+                {<MiniBall title={ficha.Status[0]} color={ficha.Status[1]} />}
+              </Td>
               <td>
                 <ActionContainer className="ActionContainer">
                   <ActionButton
@@ -153,7 +167,7 @@ export default function QueueTable() {
     </StyledFlexContainer>
   ) : (
     <h1>
-      Crie uma ficha{" "}
+      Crie uma ficha
       <Link
         to={Links.CRIAR_FICHA}
         children="neste link"
