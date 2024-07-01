@@ -4,8 +4,8 @@ import fs from "fs";
 import path from "path";
 
 // Caminhos para os seus arquivos de certificado
-const keyPath = path.resolve("key.pem");
-const certPath = path.resolve("cert.pem");
+const keyPath = path.resolve("certificate.key");
+const certPath = path.resolve("certificate.crt");
 
 // https://vitejs.dev/config/
 export default defineConfig({
