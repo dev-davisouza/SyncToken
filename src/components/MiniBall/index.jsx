@@ -8,6 +8,16 @@ const Ball = styled.span`
   height: 15px;
   border-radius: 50%;
   background-color: ${(props) => props.$color};
+
+  @media (max-width: 768px) {
+    height: 12px;
+    width: 12px;
+  }
+
+  @media (max-width: 480px) {
+    height: 12px;
+    width: 12px;
+  }
 `;
 
 const LegendContainer = styled.div`

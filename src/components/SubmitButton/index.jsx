@@ -16,6 +16,18 @@ const StyledButton = styled.button`
   display: block;
   width: 100%;
   margin-top: 25px;
+
+  @media (max-width: 768px) {
+    margin-top: 20px;
+    font-size: 16px;
+    padding: 10px 16px;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 16px;
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 `;
 
 export default function SubmitButton({ type = "submit", children, onClick }) {

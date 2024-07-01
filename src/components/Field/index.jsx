@@ -10,6 +10,18 @@ const dynamicDateReceiver = (tag) => {
     font-size: 24px;
     padding: 12px;
     box-sizing: border-box;
+
+    @media (max-width: 768px) {
+      margin: 18px 0;
+      font-size: 18px;
+      padding: 10px;
+    }
+
+    @media (max-width: 480px) {
+      margin: 12px 0;
+      font-size: 16px;
+      padding: 8px;
+    }
   `;
 };
 
@@ -17,6 +29,16 @@ const StyledLabel = styled.label`
   display: block;
   margin-bottom: 8px;
   font-size: 18px;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
 `;
 
 const Note = styled.small`
@@ -24,6 +46,11 @@ const Note = styled.small`
   font-size: 12px;
   margin: -12px 0 30px 24px;
   color: red;
+
+  @media (max-width: 768px) {
+    font-size: 9px;
+    margin: -8px 0 24px 16px;
+  }
 `;
 
 const StyledInput = dynamicDateReceiver("input");

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-  width: 100%;
+  width: 99%;
   height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 20px 0;
+  margin: 20px auto;
 `;
 
 const StyledSection = styled.section`
@@ -18,6 +18,14 @@ const StyledSection = styled.section`
   max-width: 100%;
   background-color: #f5f5f5;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px;
+  }
 `;
 
 export default function Container(props) {

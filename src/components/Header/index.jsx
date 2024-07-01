@@ -9,9 +9,16 @@ const Header = styled.header`
   background-color: #f2f2f2;
   width: 100%;
   display: flex;
-  /* flex-wrap: wrap; */
   height: fit-content;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px;
+  }
 `;
 
 const StyledNav = styled.nav`
@@ -27,6 +34,14 @@ const StyledList = styled.ul`
   display: flex;
   gap: 24px;
   align-items: center;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 480px) {
+    justify-content: center;
+  }
 `;
 
 const Sidebar = () => {

@@ -21,7 +21,11 @@ export default function ServiceBook() {
     })
       .then((resp) => resp.json())
       .then((data) => {
-        navigate(Links.HOME);
+        const msg =
+          method === "PATCH"
+            ? { message: "Project edited with success!" }
+            : { message: "Project created with success!" };
+        navigate(Links.HOME, { msg });
       });
   }
 
