@@ -26,6 +26,5 @@ dist-ssr
 # Miscelaneous
 
 braindump.txt
-cert.pem
-key.pem
-
+certificate.crt
+certificate.key
