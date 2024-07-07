@@ -5,6 +5,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Links } from "./context/Links";
 import ServiceBook from "./pages/ServiceBook";
 import Queue from "./pages/Queue";
+import Reports from "./pages/Reports";
+import People from "./pages/People";
+import ReportDetail from "./pages/ReportDetail";
 
 const AppContainer = styled.div`
   background-color: #fafafa;
@@ -40,6 +43,13 @@ function App() {
               path={`${Links.CRIAR_FICHA}/:id//*`}
               element={<ServiceBook />}
             />
+            <Route path={Links.RELATORIOS} element={<Reports />} />
+            <Route
+              path={`${Links.RELATORIOS}/:id//*`}
+              element={<ReportDetail />}
+            />
+
+            <Route path={Links.ALL_PESSOAS} element={<People />} />
           </Routes>
         </MainContainer>
       </AppContainer>

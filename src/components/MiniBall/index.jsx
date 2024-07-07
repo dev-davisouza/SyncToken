@@ -2,23 +2,31 @@ import styled from "styled-components";
 import { statusColors } from "@/context/Model";
 import { reducerColor } from "@/reducer";
 
-const Ball = styled.span`
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: ${(props) => props.$color};
+const dynamicTagReceiver = (tag) => {
+  return styled(tag)`
+    ${tag === "button" &&
+    `
+    all: unset; 
+    cursor: pointer;     
+    `}
 
-  @media (max-width: 768px) {
-    height: 12px;
-    width: 12px;
-  }
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: ${(props) => props.$color};
 
-  @media (max-width: 480px) {
-    height: 12px;
-    width: 12px;
-  }
-`;
+    @media (max-width: 768px) {
+      height: 12px;
+      width: 12px;
+    }
+
+    @media (max-width: 480px) {
+      height: 12px;
+      width: 12px;
+    }
+  `;
+};
 
 const LegendContainer = styled.div`
   display: flex;
@@ -33,8 +41,22 @@ const StyledH2 = styled.h2`
   margin-bottom: 4px;
 `;
 
+const BallSpan = dynamicTagReceiver("span");
+const BallButton = dynamicTagReceiver("button");
+
 export default function MiniBall({ color, title }) {
-  return <Ball title={title} $color={color}></Ball>;
+  return <BallSpan title={title} $color={color}></BallSpan>;
+}
+
+export function MiniBallButton({ color, title, onClick, type = "button" }) {
+  return (
+    <BallButton
+      type={type}
+      onClick={onClick}
+      title={title}
+      $color={color}
+    ></BallButton>
+  );
 }
 
 export const Legend = () => {

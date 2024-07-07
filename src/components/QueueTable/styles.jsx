@@ -33,6 +33,7 @@ export const Td = styled.td`
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  color: ${(props) => props.$color || "inherit"};
 `;
 
 export const StyledCaption = styled.h1`
@@ -102,7 +103,7 @@ export const ActionContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 12px;
-  opacity: 50%;
+  opacity: ${(props) => props.$opacity || 0.5};
   @media (max-width: 768px) {
     gap: 30px;
   }

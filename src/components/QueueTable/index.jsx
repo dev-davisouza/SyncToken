@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaRegTrashCan, FaPenToSquare } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
-import reducer from "@/reducer";
-import MiniBall from "@/components/MiniBall";
 import {
   ActionButton,
   ActionContainer,
@@ -18,46 +16,18 @@ import {
   Th,
   Tr,
 } from "./styles";
+import {
+  handleRemove,
+  usePeopleFichas,
+  handleStatusChange,
+  handleEdit,
+} from "./handles";
+import { MiniBallButton } from "../MiniBall";
 
 export default function QueueTable() {
-  const [fichas, setFichas] = useState([]);
-  const [updateTrigger, setUpdateTrigger] = useState(false); // Estado para controlar atualizações
-  const navigate = useNavigate();
-
-  /* Remove */
-  function handleRemove(id) {
-    fetch(`http://127.0.0.1:8000/pessoas/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json",
-      },
-    }).then(() => {
-      setFichas(fichas.filter((ficha) => ficha.id !== id));
-      setUpdateTrigger((prev) => !prev);
-    });
-  }
-  /* edit */
-  function handleEdit(id) {
-    navigate(`${Links.CRIAR_FICHA}/${id}`);
-  }
-
-  useEffect(() => {
-    fetch(`http://127.0.0.1:8000/pessoas/`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        const updatedData = data.map((ficha) => ({
-          ...ficha,
-          Status: reducer(ficha.Status),
-        }));
-        setFichas(updatedData);
-      })
-      .catch((err) => console.log(err));
-  }, [updateTrigger]);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
+  const [fichas, setFichas] = usePeopleFichas(updateTrigger);
+  const navigate = useNavigate(); // useNavigate no componente principal
 
   return fichas.length !== 0 ? (
     <>
@@ -81,25 +51,47 @@ export default function QueueTable() {
           <tbody>
             {fichas.map((ficha) => (
               <Tr key={ficha.NIS_CPF}>
-                <Td>{ficha.N}</Td>
+                <Td>{ficha.NdaFicha}</Td>
                 <Td>{ficha.NIS_CPF}</Td>
                 <Td>{ficha.Nome}</Td>
                 <Td>{ficha.Endereço} </Td>
-                <Td>{ficha.Ação}</Td>
+                {ficha.Ação === "Gestão de bloqueio/cancelamento" ? (
+                  <Td $color="red">{ficha.Ação}</Td>
+                ) : (
+                  <Td>{ficha.Ação}</Td>
+                )}
+
                 <Td>{ficha.created_at}</Td>
                 <Td>{ficha.Prioridade}</Td>
                 <Td>
-                  {<MiniBall title={ficha.Status[0]} color={ficha.Status[1]} />}
+                  {
+                    <MiniBallButton
+                      title={ficha.Status[0]}
+                      color={ficha.Status[1]}
+                      onClick={() =>
+                        handleStatusChange(
+                          ficha.NIS_CPF,
+                          ficha,
+                          setFichas,
+                          setUpdateTrigger
+                        )
+                      }
+                    />
+                  }
                 </Td>
                 <td>
                   <ActionContainer className="ActionContainer">
                     <ActionButton
-                      onClick={() => handleRemove(ficha.N)}
-                      title="Excluir um registro é permanete!"
+                      onClick={() => {
+                        handleRemove(ficha.NIS_CPF, setFichas, navigate);
+                      }}
+                      title="Excluir um registro é permanente!"
                     >
                       <FaRegTrashCan />
                     </ActionButton>
-                    <ActionButton onClick={() => handleEdit(ficha.N)}>
+                    <ActionButton
+                      onClick={() => handleEdit(ficha.NIS_CPF, navigate)}
+                    >
                       <FaPenToSquare />
                     </ActionButton>
                   </ActionContainer>
@@ -109,10 +101,9 @@ export default function QueueTable() {
           </tbody>
         </StyledTable>
 
-        {/* Card responsive */}
         {fichas.map((ficha) => (
           <Card key={ficha.NIS_CPF}>
-            <CardNumber>N°{ficha.N}</CardNumber>
+            <CardNumber>N°{ficha.NdaFicha}</CardNumber>
             <CardItem>
               <div>NIS/CPF:</div>
               <CardValue>{ficha.NIS_CPF}</CardValue>
@@ -131,7 +122,7 @@ export default function QueueTable() {
             </CardItem>
             <CardItem>
               <div>Data:</div>
-              <CardValue className="OIE">{ficha.created_at}</CardValue>
+              <CardValue>{ficha.created_at}</CardValue>
             </CardItem>
             <CardItem>
               <div>Prioridade:</div>
@@ -140,17 +131,30 @@ export default function QueueTable() {
             <CardItem>
               <div>Status:</div>
               <CardValue>
-                {<MiniBall title={ficha.Status[0]} color={ficha.Status[1]} />}
+                {
+                  <MiniBallButton
+                    title={ficha.Status[0]}
+                    color={ficha.Status[1]}
+                    onClick={() =>
+                      handleStatusChange(
+                        ficha.NIS_CPF,
+                        ficha,
+                        setFichas,
+                        setUpdateTrigger
+                      )
+                    }
+                  />
+                }
               </CardValue>
             </CardItem>
             <ActionContainer>
               <ActionButton
-                onClick={() => handleRemove(ficha.N)}
-                title="Excluir um registro é permanete!"
+                onClick={() => handleRemove(ficha.NIS_CPF, setFichas, navigate)}
+                title="Excluir um registro é permanente!"
               >
                 <FaRegTrashCan />
               </ActionButton>
-              <ActionButton onClick={() => handleEdit(ficha.N)}>
+              <ActionButton onClick={() => handleEdit(ficha.NIS_CPF, navigate)}>
                 <FaPenToSquare />
               </ActionButton>
             </ActionContainer>

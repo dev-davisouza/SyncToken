@@ -32,7 +32,7 @@ const StyledButton = styled.button`
 
 export default function SubmitButton({ type = "submit", children, onClick }) {
   return (
-    <StyledButton onClick={() => onClick} type={type}>
+    <StyledButton onClick={onClick} type={type}>
       {children}
     </StyledButton>
   );

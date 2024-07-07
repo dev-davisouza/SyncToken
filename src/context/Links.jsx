@@ -2,7 +2,9 @@ import { createContext, useState } from "react";
 
 export const Links = {
   HOME: "/",
-  CRIAR_FICHA: "criar-ficha",
+  CRIAR_FICHA: "/criar-ficha",
+  RELATORIOS: "/relatorios",
+  ALL_PESSOAS: "pessoas",
 };
 
 /*  

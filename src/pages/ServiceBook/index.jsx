@@ -20,12 +20,13 @@ export default function ServiceBook() {
       body: JSON.stringify(data),
     })
       .then((resp) => resp.json())
-      .then((data) => {
-        const msg =
+      .then(() => {
+        const message =
           method === "PATCH"
-            ? { message: "Project edited with success!" }
-            : { message: "Project created with success!" };
-        navigate(Links.HOME, { msg });
+            ? "Ficha editada com sucesso!"
+            : "Pessoa adicionada com sucesso!";
+
+        navigate(Links.HOME, { state: { message } });
       });
   }
 

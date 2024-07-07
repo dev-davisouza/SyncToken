@@ -1,11 +1,20 @@
 import { Input, Dropdown } from "@/components/Field";
+import { Links } from "@/context/Links";
 import styled from "styled-components";
 import SubmitButton from "@/components/SubmitButton";
 import { useEffect, useState } from "react";
 import { dataMsg } from "@/context/Model";
-import { useParams } from "react-router-dom";
-import { usePrioridades, useAcoes, useStatusChoices } from "./getters";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  usePrioridades,
+  useAcoes,
+  useStatusChoices,
+  usePessoas,
+  useDocTypes,
+} from "./getters";
 import { ServiceBookModel } from "@/context/Model";
+import useNisCpfFormatter from "./NisCpfFormatter"; // Importe o hook
+import Message from "@/components/Message";
 
 const StyledLegend = styled.legend`
   text-align: center;
@@ -20,12 +29,21 @@ const StyledOption = styled.option`
 `;
 
 export default function TokenForm({ handleSubmit }) {
+  /* States */
   const { id } = useParams();
   const [data, setData] = useState({ ServiceBookModel });
   const [currentDate, setCurrentDate] = useState("");
+  const [isFieldsDisabled, setIsFieldsDisabled] = useState(false);
   const Prioridades = usePrioridades();
   const Ações = useAcoes();
   const StatusChoices = useStatusChoices();
+  const People = usePessoas(id);
+  const docTypes = useDocTypes();
+  const navigate = useNavigate();
+
+  const { nisCpfType, handleNisCpfInputChange } = useNisCpfFormatter(
+    data.DocType
+  ); // Hook useNisCpfFormatter
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -33,46 +51,90 @@ export default function TokenForm({ handleSubmit }) {
   }, []);
 
   useEffect(() => {
-    if (id) {
-      fetch(`http://127.0.0.1:8000/pessoas/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
-          console.log(data);
-          setData(data);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      fetch("http://127.0.0.1:8000/pessoas/", {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
-          setData(data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [id]);
+    setData(People);
+  }, [People]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    handleSubmit(data, id);
+    // Remove pontos e hífens do campo NIS/CPF
+    const cleanData = { ...data, NIS_CPF: data.NIS_CPF.replace(/\D/g, "") };
+    handleSubmit(cleanData, id);
   };
 
+  /*  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "NIS_CPF") {
+      handleNisCpfInputChange(e, data, setData);
+    } else {
+      setData({ ...data, [name]: value });
+    }
+  }; */
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "NIS_CPF") {
+      // Formata e atualiza o valor do campo NIS/CPF
+      handleNisCpfInputChange(e, data, setData);
+      const cleanValue = value.replace(/\D/g, "");
+
+      if (cleanValue.length === 11) {
+        setIsFieldsDisabled(true);
+        fetch(`http://127.0.0.1:8000/pessoas/${cleanValue}`, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
+          .then((resp) => {
+            if (resp.ok) {
+              navigate(`${Links.CRIAR_FICHA}/${cleanValue}`);
+              setIsFieldsDisabled(false);
+            } else {
+              setIsFieldsDisabled(false);
+            }
+          })
+          /* .then((data) => {
+            if (data.ok) console.log(data);
+            setData(data);
+            setIsFieldsDisabled(false);
+          }) */
+          .catch((err) => {
+            console.log(err);
+            setIsFieldsDisabled(false);
+          });
+      }
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   return (
-    <form action="" onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <StyledLegend>Livro de atendimento</StyledLegend>
+      <Dropdown
+        label="Tipo de Documento:"
+        name="DocType"
+        required
+        onChange={handleChange}
+        value={data.DocType}
+        disabled={isFieldsDisabled}
+      >
+        <StyledOption
+          key="Selecione um tipo de documento"
+          selected
+          disabled
+          value=""
+        >
+          Selecione um tipo de documento
+        </StyledOption>
+
+        {docTypes.map((docType) => (
+          <StyledOption value={docType} key={docType}>
+            {docType}
+          </StyledOption>
+        ))}
+      </Dropdown>
+
       <Input
         label="NIS/CPF:"
         name="NIS_CPF"
@@ -81,6 +143,7 @@ export default function TokenForm({ handleSubmit }) {
         value={data.NIS_CPF}
         onChange={handleChange}
         type="text"
+        disabled={isFieldsDisabled}
       />
       <Input
         label="Nome:"
@@ -90,6 +153,7 @@ export default function TokenForm({ handleSubmit }) {
         onChange={handleChange}
         value={data.Nome}
         type="text"
+        disabled={isFieldsDisabled}
       />
       <Input
         name="Endereço"
@@ -99,6 +163,7 @@ export default function TokenForm({ handleSubmit }) {
         onChange={handleChange}
         value={data.Endereço}
         type="text"
+        disabled={isFieldsDisabled}
       />
 
       <Dropdown
@@ -107,15 +172,22 @@ export default function TokenForm({ handleSubmit }) {
         required
         onChange={handleChange}
         value={data.Ação}
+        disabled={isFieldsDisabled}
       >
         <StyledOption key="Selecione uma ação" disabled selected value="">
           Selecione uma ação
         </StyledOption>
-        {Ações.map((ação) => (
-          <StyledOption key={ação} value={ação}>
-            {ação}
-          </StyledOption>
-        ))}
+        {Ações.map((ação) =>
+          ação === "Gestão de bloqueio/cancelamento" ? (
+            <StyledOption key={ação} value={ação}>
+              {ação}
+            </StyledOption>
+          ) : (
+            <StyledOption key={ação} value={ação}>
+              {ação}
+            </StyledOption>
+          )
+        )}
       </Dropdown>
 
       <Input
@@ -133,6 +205,7 @@ export default function TokenForm({ handleSubmit }) {
         required
         onChange={handleChange}
         value={data.Prioridade}
+        disabled={isFieldsDisabled}
       >
         <StyledOption
           key="Selecione um nível de prioridade"
@@ -155,6 +228,7 @@ export default function TokenForm({ handleSubmit }) {
         required
         onChange={handleChange}
         value={data.Status}
+        disabled={isFieldsDisabled}
       >
         <StyledOption key="Selecione um estado" disabled selected value="">
           Selecione um estado
@@ -164,19 +238,9 @@ export default function TokenForm({ handleSubmit }) {
             {label}
           </StyledOption>
         ))}
-        {/*  {Object.entries(Status).map((key, color) => {
-          const [status, statusColor] = reducerColor(color);
-          const status_color = reducerColor(color);
-
-          return (
-            <StyledOption value={status_color} key={key}>
-              {status}
-            </StyledOption>
-          );
-        })} */}
       </Dropdown>
 
-      <SubmitButton type="submit">
+      <SubmitButton type="submit" disabled={isFieldsDisabled}>
         {id ? "Editar ficha" : "Criar ficha"}
       </SubmitButton>
     </form>

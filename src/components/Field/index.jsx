@@ -53,6 +53,12 @@ const Note = styled.small`
   }
 `;
 
+const StyledFlexContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
 const StyledInput = dynamicDateReceiver("input");
 
 export const Input = ({
@@ -66,9 +72,16 @@ export const Input = ({
   readOnly = false,
   value,
   note = "",
+  formmater,
 }) => {
   return (
     <div>
+      {formmater && (
+        <StyledFlexContent>
+          <StyledLabel>{label}</StyledLabel>
+          <>{formmater}</>
+        </StyledFlexContent>
+      )}
       <StyledLabel>{label}</StyledLabel>
       <StyledInput
         name={name}

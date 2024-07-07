@@ -18,6 +18,7 @@ const StyledSection = styled.section`
   max-width: 100%;
   background-color: #f5f5f5;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
 
   @media (max-width: 768px) {
     padding: 20px;
