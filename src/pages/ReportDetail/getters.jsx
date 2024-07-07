@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import apiPath from "@/context/Api";
 
 export function usePessoasRelatorio() {
   const [fichas, setFichas] = useState("");
@@ -14,7 +15,7 @@ export function usePessoasRelatorio() {
   const todayString = getLocalDateString(new Date());
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/pessoas/`, {
+    fetch(`${apiPath}/pessoas/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",

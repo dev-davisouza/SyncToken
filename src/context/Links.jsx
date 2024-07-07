@@ -4,7 +4,7 @@ export const Links = {
   HOME: "/",
   CRIAR_FICHA: "/criar-ficha",
   RELATORIOS: "/relatorios",
-  ALL_PESSOAS: "pessoas",
+  ALL_PESSOAS: "/pessoas",
 };
 
 /*  

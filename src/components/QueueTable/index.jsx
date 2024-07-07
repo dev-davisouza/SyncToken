@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegTrashCan, FaPenToSquare } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
+import Loading from "@/components/Loader";
 import {
   ActionButton,
   ActionContainer,
@@ -22,12 +23,23 @@ import {
   handleStatusChange,
   handleEdit,
 } from "./handles";
-import { MiniBallButton } from "../MiniBall";
+import { MiniBallButton } from "@/components/MiniBall";
 
 export default function QueueTable() {
   const [updateTrigger, setUpdateTrigger] = useState(false);
   const [fichas, setFichas] = usePeopleFichas(updateTrigger);
+  const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
   const navigate = useNavigate(); // useNavigate no componente principal
+
+  useEffect(() => {
+    if (fichas.length > 0 || updateTrigger) {
+      setIsLoading(false);
+    }
+  }, [fichas, updateTrigger]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return fichas.length !== 0 ? (
     <>

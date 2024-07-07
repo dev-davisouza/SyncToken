@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import apiPath from "@/context/Api";
 
 export function useRelatorios() {
   const [relatorios, setRelatorios] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/relatorios/", {
+    fetch(`${apiPath}/relatorios/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -21,7 +22,7 @@ export function useRelatorios() {
 export function useRelatorio(id) {
   const [relatorio, setRelatorio] = useState({});
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/relatorios/${id}/`, {
+    fetch(`${apiPath}/relatorios/${id}/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",

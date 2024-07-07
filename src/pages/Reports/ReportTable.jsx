@@ -2,7 +2,7 @@ import { ActionContainer, StyledCaption } from "@/components/QueueTable/styles";
 import SubmitButton from "@/components/SubmitButton";
 import { useRelatorio, useRelatorios } from "./getters";
 import Search from "@/components/Search";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
 import {
   RelatoriesContainer,
@@ -15,7 +15,6 @@ import {
 export default function ReportTable() {
   const navigate = useNavigate();
   const relatorios = useRelatorios();
-  const { id } = useParams();
 
   function handleViewRelatorio(id) {
     navigate(`${Links.RELATORIOS}/${id}`);

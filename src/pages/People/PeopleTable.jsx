@@ -1,7 +1,4 @@
-import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import {
-  ActionButton,
-  ActionContainer,
   Card,
   StyledCaption,
   StyledFlexContainer,
@@ -12,18 +9,14 @@ import {
 } from "@/components/QueueTable/styles";
 import reducer from "@/reducer";
 import { useEffect, useState } from "react";
-import MiniBall from "@/components/MiniBall";
-import {
-  CardItem,
-  CardNumber,
-  CardValue,
-} from "../../components/QueueTable/styles";
+import { CardItem, CardValue } from "@/components/QueueTable/styles";
+import apiPath from "@/context/Api";
 
 export default function PeopleTable() {
   const [pessoas, setPessoas] = useState([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/pessoas-all/`, {
+    fetch(`${apiPath}/pessoas-all/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",

@@ -1,11 +1,12 @@
 import { Links } from "@/context/Links";
+import apiPath from "@/context/Api";
 import reducer from "@/reducer";
 import { useEffect, useState } from "react";
 
 /* Remove */
 export async function handleRemove(id, setFichas, navigate) {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/pessoas/${id}`, {
+    const response = await fetch(`${apiPath}/pessoas/${id}`, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
@@ -51,8 +52,9 @@ export function handleEdit(id, navigate) {
 /* Get Pessoas do dia */
 export function usePeopleFichas(updateTrigger) {
   const [fichas, setFichas] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/pessoas/`, {
+    fetch(`${apiPath}/pessoas`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -65,8 +67,10 @@ export function usePeopleFichas(updateTrigger) {
           Status: reducer(ficha.Status), // Atualiza o status com reducer
         }));
         setFichas(updatedData);
+        setIsLoading(false); // Finaliza o carregamento
       })
       .catch((err) => console.log(err));
+    setIsLoading(false); // Finaliza o carregamento
   }, [updateTrigger]);
   return [fichas, setFichas];
 }
@@ -84,7 +88,7 @@ export function handleStatusChange(
     Status: nextStatus,
   };
 
-  fetch(`http://127.0.0.1:8000/pessoas/${id}/`, {
+  fetch(`${apiPath}/pessoas/${id}/`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

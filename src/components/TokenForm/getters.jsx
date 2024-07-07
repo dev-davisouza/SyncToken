@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { ServiceBookModel } from "@/context/Model";
+import apiPath from "@/context/Api";
 
 export function usePrioridades() {
   const [prioridades, setPrioridades] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/prioridades/", {
+    fetch(`${apiPath}/prioridades/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -22,7 +23,7 @@ export function usePrioridades() {
 export function useAcoes() {
   const [acoes, setAcoes] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/acoes/", {
+    fetch(`${apiPath}/acoes/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -40,7 +41,7 @@ export function useAcoes() {
 export function useDocTypes() {
   const [docTypes, setDocTypes] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/doctypes/", {
+    fetch(`${apiPath}/doctypes/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -59,7 +60,7 @@ export function usePessoas(id = "") {
   const [data, setData] = useState({ ServiceBookModel });
   useEffect(() => {
     if (id) {
-      fetch(`http://127.0.0.1:8000/pessoas/${id}`, {
+      fetch(`${apiPath}/pessoas/${id}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -71,7 +72,7 @@ export function usePessoas(id = "") {
         })
         .catch((err) => console.log(err));
     } else {
-      fetch("http://127.0.0.1:8000/pessoas/", {
+      fetch(`${apiPath}/pessoas/`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -90,7 +91,7 @@ export function usePessoas(id = "") {
 export function useStatusChoices() {
   const [statusChoices, setStatusChoices] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/status_choices/", {
+    fetch(`${apiPath}/status_choices/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
