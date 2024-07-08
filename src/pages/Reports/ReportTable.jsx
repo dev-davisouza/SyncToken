@@ -1,6 +1,7 @@
 import { ActionContainer, StyledCaption } from "@/components/QueueTable/styles";
 import SubmitButton from "@/components/SubmitButton";
 import { useRelatorio, useRelatorios } from "./getters";
+import Loading from "@/components/Loader";
 import Search from "@/components/Search";
 import { useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
@@ -20,7 +21,7 @@ export default function ReportTable() {
     navigate(`${Links.RELATORIOS}/${id}`);
   }
 
-  return (
+  return relatorios.length !== 0 ? (
     <>
       <Search placeholder="Filte por data!" />
       <StyledCaption>Relatórios diários</StyledCaption>
@@ -48,5 +49,7 @@ export default function ReportTable() {
         ))}
       </RelatoriesContainer>
     </>
+  ) : (
+    <Loading />
   );
 }

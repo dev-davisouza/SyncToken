@@ -11,6 +11,7 @@ import reducer from "@/reducer";
 import { useEffect, useState } from "react";
 import { CardItem, CardValue } from "@/components/QueueTable/styles";
 import apiPath from "@/context/Api";
+import Loading from "@/components/Loader";
 
 export default function PeopleTable() {
   const [pessoas, setPessoas] = useState([]);
@@ -33,7 +34,7 @@ export default function PeopleTable() {
       .catch((err) => console.log(err));
   }, []);
 
-  return (
+  return pessoas.length !== 0 ? (
     <>
       <StyledCaption>Pessoas registradas</StyledCaption>
 
@@ -94,5 +95,7 @@ export default function PeopleTable() {
         ))}
       </StyledFlexContainer>
     </>
+  ) : (
+    <Loading />
   );
 }

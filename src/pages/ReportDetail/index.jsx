@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
-import { Link, useNavigate } from "react-router-dom";
-import { Links } from "@/context/Links";
+import { useNavigate } from "react-router-dom";
+import Loading from "@/components/Loader";
+
 import {
   Card,
   CardItem,
@@ -91,13 +92,6 @@ export default function ReportDetail() {
       </Container>
     </>
   ) : (
-    <h1>
-      Crie uma ficha
-      <Link
-        to={Links.CRIAR_FICHA}
-        children="neste link"
-        style={{ color: "darkblue" }}
-      />
-    </h1>
+    <Loading />
   );
 }

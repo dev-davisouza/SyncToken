@@ -67,7 +67,6 @@ export function usePeopleFichas(updateTrigger) {
           Status: reducer(ficha.Status), // Atualiza o status com reducer
         }));
         setFichas(updatedData);
-        setIsLoading(false); // Finaliza o carregamento
       })
       .catch((err) => console.log(err));
     setIsLoading(false); // Finaliza o carregamento

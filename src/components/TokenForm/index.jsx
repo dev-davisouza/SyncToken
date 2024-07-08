@@ -73,7 +73,7 @@ export default function TokenForm({ handleSubmit }) {
 
       if (cleanValue.length === 11) {
         setIsFieldsDisabled(true);
-        fetch(`${apiPath}/pessoas/${cleanValue}`, {
+        fetch(`${apiPath}/pessoas-all/${cleanValue}`, {
           method: "GET",
           headers: {
             "Content-type": "application/json",
@@ -85,6 +85,8 @@ export default function TokenForm({ handleSubmit }) {
               setRemoveLoader(true);
               setIsFieldsDisabled(false);
             } else {
+              navigate(`${Links.CRIAR_FICHA}`);
+              setData("");
               setIsFieldsDisabled(false);
             }
           })

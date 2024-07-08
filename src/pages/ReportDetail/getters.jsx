@@ -15,7 +15,7 @@ export function usePessoasRelatorio() {
   const todayString = getLocalDateString(new Date());
 
   useEffect(() => {
-    fetch(`${apiPath}/pessoas/`, {
+    fetch(`${apiPath}/pessoas-all/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -25,10 +25,10 @@ export function usePessoasRelatorio() {
       .then((data) => {
         console.log(data);
         console.log(todayString);
-        const filteredFichas = data.filter(
+        /* const filteredFichas = data.filter(
           (ficha) => ficha.created_at === todayString
-        );
-        setFichas(filteredFichas);
+        ); */
+        setFichas(data);
       })
       .catch((err) => console.log(err));
   }, []);

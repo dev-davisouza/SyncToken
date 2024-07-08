@@ -28,18 +28,7 @@ import { MiniBallButton } from "@/components/MiniBall";
 export default function QueueTable() {
   const [updateTrigger, setUpdateTrigger] = useState(false);
   const [fichas, setFichas] = usePeopleFichas(updateTrigger);
-  const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
   const navigate = useNavigate(); // useNavigate no componente principal
-
-  useEffect(() => {
-    if (fichas.length > 0 || updateTrigger) {
-      setIsLoading(false);
-    }
-  }, [fichas, updateTrigger]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return fichas.length !== 0 ? (
     <>
@@ -175,13 +164,6 @@ export default function QueueTable() {
       </StyledFlexContainer>
     </>
   ) : (
-    <h1>
-      Crie uma ficha
-      <Link
-        to={Links.CRIAR_FICHA}
-        children="neste link"
-        style={{ color: "darkblue" }}
-      />
-    </h1>
+    <Loading />
   );
 }
