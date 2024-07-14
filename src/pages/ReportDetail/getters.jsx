@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import apiPath from "@/context/Api";
+import { ReportDetailModel } from "../../context/Model";
+import { useNavigate } from "react-router-dom";
 
-export function usePessoasRelatorio() {
-  const [fichas, setFichas] = useState("");
+// Função para formatar a data como YYYY-MM-DD no horário local
+const getLocalDateString = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
-  // Função para formatar a data como YYYY-MM-DD no horário local
-  const getLocalDateString = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const todayString = getLocalDateString(new Date());
-
+export function useRelatorio(date) {
+  const [relatorio, setRelatorio] = useState({ ...ReportDetailModel });
   useEffect(() => {
-    fetch(`${apiPath}/pessoas-all/`, {
+    fetch(`${apiPath}/relatorios/${date}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -23,15 +22,35 @@ export function usePessoasRelatorio() {
     })
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        console.log(todayString);
-        /* const filteredFichas = data.filter(
-          (ficha) => ficha.created_at === todayString
-        ); */
-        setFichas(data);
+        setRelatorio(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error("Erro ao buscar Relatorios:", err));
   }, []);
+  return relatorio;
+}
 
-  return fichas;
+export function usePessoaFromRelatorio(date) {
+  const [relatorioPessoas, setRelatorioPessoas] = useState([]);
+  const relatorio = useRelatorio(date);
+
+  useEffect(() => {
+    if (relatorio.pessoas && relatorio.pessoas.length > 0) {
+      const fetchPessoas = async () => {
+        const pessoasData = await Promise.all(
+          relatorio.pessoas.map((pk) =>
+            fetch(`${apiPath}/pessoas-all/${pk}`, {
+              method: "GET",
+              headers: {
+                "Content-type": "application/json",
+              },
+            }).then((resp) => resp.json())
+          )
+        );
+        setRelatorioPessoas(pessoasData);
+      };
+      fetchPessoas();
+    }
+  }, [relatorio.pessoas]);
+
+  return relatorioPessoas;
 }

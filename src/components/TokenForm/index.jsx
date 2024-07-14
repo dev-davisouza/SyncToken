@@ -86,7 +86,6 @@ export default function TokenForm({ handleSubmit }) {
               setIsFieldsDisabled(false);
             } else {
               navigate(`${Links.CRIAR_FICHA}`);
-              setData("");
               setIsFieldsDisabled(false);
             }
           })

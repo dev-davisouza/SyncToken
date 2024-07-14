@@ -5,6 +5,7 @@ export const Links = {
   CRIAR_FICHA: "/criar-ficha",
   RELATORIOS: "/relatorios",
   ALL_PESSOAS: "/pessoas",
+  AUTH: "/auth",
 };
 
 /*  

@@ -31,6 +31,34 @@ export async function handleRemove(id, setFichas, navigate) {
   }
 }
 
+/* Filter Queue */
+export async function handleFilter(id, setFichas, navigate) {
+  try {
+    const response = await fetch(`${apiPath}/pessoas/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      // Atualiza o estado para remover a ficha
+      setFichas((prevFichas) =>
+        prevFichas.filter((ficha) => ficha.NIS_CPF !== id)
+      );
+
+      // Navega para a página Queue com uma mensagem de sucesso
+      navigate(Links.HOME, {
+        state: { message: "Ficha excluída com sucesso!" },
+      });
+    } else {
+      console.error("Failed to delete", response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error("Error in fetch:", error);
+  }
+}
+
 /* Get Next Status */
 export function getNextStatus(currentStatus) {
   if (currentStatus[0] === "A ser atendido") {

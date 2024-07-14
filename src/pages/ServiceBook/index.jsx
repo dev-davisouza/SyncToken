@@ -9,7 +9,9 @@ export default function ServiceBook() {
 
   function handleSubmit(data, id) {
     const method = id ? "PATCH" : "POST";
-    const url = id ? `${apiPath}/pessoas/${id}/` : `${apiPath}/pessoas/`;
+    const url = id
+      ? `${apiPath}/pessoas-all/${id}/`
+      : `${apiPath}/pessoas-all/`;
 
     fetch(url, {
       method: method,

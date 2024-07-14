@@ -35,6 +35,7 @@ export function useAcoes() {
       })
       .catch((err) => console.error("Erro ao buscar ações:", err));
   }, []);
+
   return acoes;
 }
 
@@ -60,7 +61,7 @@ export function usePessoas(id = "") {
   const [data, setData] = useState({ ServiceBookModel });
   useEffect(() => {
     if (id) {
-      fetch(`${apiPath}/pessoas/${id}`, {
+      fetch(`${apiPath}/pessoas-all/${id}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -72,7 +73,7 @@ export function usePessoas(id = "") {
         })
         .catch((err) => console.log(err));
     } else {
-      fetch(`${apiPath}/pessoas/`, {
+      fetch(`${apiPath}/pessoas-all/`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",

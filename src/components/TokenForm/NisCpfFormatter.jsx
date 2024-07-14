@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useNisCpfFormatter(initialType = "CPF", Number) {
+export default function useNisCpfFormatter(initialType = "CPF") {
   const [nisCpfType, setNisCpfType] = useState(initialType);
 
   const handleNisCpfChange = (e) => {
@@ -9,7 +9,7 @@ export default function useNisCpfFormatter(initialType = "CPF", Number) {
   };
 
   const formatNisCpf = (value) => {
-    if (initialType === "CPF") {
+    if (initialType == "CPF") {
       return value
         .replace(/\D/g, "")
         .replace(/(\d{3})(\d)/, "$1.$2")
@@ -35,6 +35,5 @@ export default function useNisCpfFormatter(initialType = "CPF", Number) {
     nisCpfType,
     handleNisCpfChange,
     handleNisCpfInputChange,
-    Number,
   };
 }

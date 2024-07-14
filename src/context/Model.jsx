@@ -9,6 +9,11 @@ export const ServiceBookModel = {
   Status: [],
 };
 
+export const ReportDetailModel = {
+  data: "",
+  pessoas: [],
+};
+
 export const Prioridades = ["Não", "Sim"];
 
 export const Ações = [

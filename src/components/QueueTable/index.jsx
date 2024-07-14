@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaRegTrashCan, FaPenToSquare } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { Links } from "@/context/Links";
 import Loading from "@/components/Loader";
+import { Links } from "@/context/Links";
 import {
   ActionButton,
   ActionContainer,
@@ -27,10 +27,26 @@ import { MiniBallButton } from "@/components/MiniBall";
 
 export default function QueueTable() {
   const [updateTrigger, setUpdateTrigger] = useState(false);
-  const [fichas, setFichas] = usePeopleFichas(updateTrigger);
+  const [fichas, setFichas, isLoading] = usePeopleFichas(updateTrigger);
   const navigate = useNavigate(); // useNavigate no componente principal
 
-  return fichas.length !== 0 ? (
+  // Condições para renderizar o conteúdo baseado no estado das fichas
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (fichas.length === 0) {
+    return (
+      <h3>
+        Clique aqui para{" "}
+        <Link style={{ color: "blue" }} to={Links.CRIAR_FICHA}>
+          criar fichas
+        </Link>
+      </h3>
+    );
+  }
+
+  return (
     <>
       <StyledCaption>Fila das Fichas</StyledCaption>
 
@@ -43,7 +59,7 @@ export default function QueueTable() {
               <Th>Nome</Th>
               <Th>Endereço</Th>
               <Th>Ação</Th>
-              <Th>Data</Th>
+              <Th>Data de registro</Th>
               <Th>Prioridade</Th>
               <Th>Status</Th>
               <th></th>
@@ -122,7 +138,7 @@ export default function QueueTable() {
               <CardValue>{ficha.Ação}</CardValue>
             </CardItem>
             <CardItem>
-              <div>Data:</div>
+              <div>Data de registro:</div>
               <CardValue>{ficha.created_at}</CardValue>
             </CardItem>
             <CardItem>
@@ -163,7 +179,5 @@ export default function QueueTable() {
         ))}
       </StyledFlexContainer>
     </>
-  ) : (
-    <Loading />
   );
 }
