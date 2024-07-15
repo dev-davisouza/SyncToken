@@ -3,8 +3,9 @@ import Container from "@/components/Container";
 import SubmitButton from "@/components/SubmitButton";
 import Message from "@/components/Message";
 import { Links } from "@/context/Links";
-import { useEffect, useState } from "react";
+import AuthContext from "@/context/Auth";
 import apiPath from "@/context/Api";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
@@ -12,31 +13,23 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const response = await fetch(`${apiPath}/login/`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ username: user, password: password }),
-    });
-
-    if (response.ok) {
+    try {
+      await login(user, password); // Chame a função de login do contexto
       navigate(Links.HOME, {
         state: { message: "Login executado com sucesso!" },
       });
-    } else {
+    } catch (error) {
       setMessage("Login failed!");
     }
   }
 
   return (
     <Container>
-      {message && (
-        <Message type={authenticated ? "success" : "error"} msg={message} />
-      )}
+      {message && <Message type="error" msg={message} />}
       <form onSubmit={handleSubmit}>
         <Input
           name="user"
