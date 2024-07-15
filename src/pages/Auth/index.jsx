@@ -3,7 +3,6 @@ import Container from "@/components/Container";
 import SubmitButton from "@/components/SubmitButton";
 import Message from "@/components/Message";
 import { Links } from "@/context/Links";
-import AuthContext from "@/context/Auth";
 import apiPath from "@/context/Api";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +12,6 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
 
   async function handleSubmit(event) {
     event.preventDefault();

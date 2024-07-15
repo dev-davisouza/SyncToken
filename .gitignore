@@ -28,3 +28,4 @@ dist-ssr
 braindump.txt
 certificate.crt
 certificate.key
+src/context/Api.jsx

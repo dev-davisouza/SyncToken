@@ -9,8 +9,6 @@ import Reports from "./pages/Reports";
 import People from "./pages/People";
 import ReportDetail from "./pages/ReportDetail";
 import Auth from "./pages/Auth";
-import AuthContext, { AuthProvider } from "./context/Auth";
-import { useContext, useEffect } from "react";
 
 const AppContainer = styled.div`
   background-color: #fafafa;
@@ -33,47 +31,33 @@ const MainContainer = styled.main`
 `;
 
 function App() {
-  const { user } = useContext(AuthContext);
-  useEffect(() => {
-    console.log(user);
-  });
-
   return (
     <AppContainer>
       <GlobalStyles />
-      {user ? (
-        <>
-          <Sidebar />
-          <MainContainer>
-            <Routes>
-              <Route path={Links.HOME} element={<Queue />} />
-              <Route path={Links.CRIAR_FICHA} element={<ServiceBook />} />
-              <Route
-                path={`${Links.CRIAR_FICHA}/:id/*`}
-                element={<ServiceBook />}
-              />
-              <Route path={Links.RELATORIOS} element={<Reports />} />
-              <Route
-                path={`${Links.RELATORIOS}/:id/*`}
-                element={<ReportDetail />}
-              />
-              <Route path={Links.ALL_PESSOAS} element={<People />} />
-            </Routes>
-          </MainContainer>
-        </>
-      ) : (
+      <Sidebar />
+      <MainContainer>
         <Routes>
+          <Route path={Links.HOME} element={<Queue />} />
+          <Route path={Links.CRIAR_FICHA} element={<ServiceBook />} />
+          <Route
+            path={`${Links.CRIAR_FICHA}/:id/*`}
+            element={<ServiceBook />}
+          />
+          <Route path={Links.RELATORIOS} element={<Reports />} />
+          <Route
+            path={`${Links.RELATORIOS}/:id/*`}
+            element={<ReportDetail />}
+          />
+          <Route path={Links.ALL_PESSOAS} element={<People />} />
           <Route path={Links.AUTH} element={<Auth />} />
         </Routes>
-      )}
+      </MainContainer>
     </AppContainer>
   );
 }
 
 export default () => (
   <BrowserRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <App />
   </BrowserRouter>
 );
