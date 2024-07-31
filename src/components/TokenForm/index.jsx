@@ -1,6 +1,5 @@
 import { Input, Dropdown } from "@/components/Field";
 import { Links } from "@/context/Links";
-import apiPath from "@/context/Api";
 import styled from "styled-components";
 import SubmitButton from "@/components/SubmitButton";
 import Loading from "@/components/Loader";
@@ -16,6 +15,8 @@ import {
 } from "./getters";
 import { ServiceBookModel } from "@/context/Model";
 import useNisCpfFormatter from "./NisCpfFormatter"; // Importe o hook
+
+const apiPath = import.meta.env.VITE_API_URL;
 
 const StyledLegend = styled.legend`
   text-align: center;

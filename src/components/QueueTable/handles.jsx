@@ -1,7 +1,8 @@
 import { Links } from "@/context/Links";
-import apiPath from "@/context/Api";
 import reducer from "@/reducer";
 import { useEffect, useState } from "react";
+
+const apiPath = import.meta.env.VITE_API_URL;
 
 /* Remove */
 export async function handleRemove(id, setFichas, navigate) {

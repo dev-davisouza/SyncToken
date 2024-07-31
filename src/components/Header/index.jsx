@@ -3,6 +3,7 @@ import NavItem from "./NavItem";
 import { Link } from "react-router-dom";
 import { Links } from "@/context/Links";
 import { FaBookBookmark, FaPeopleGroup, FaBuffer } from "react-icons/fa6";
+import { FaStickyNote } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
 import { useState } from "react";
@@ -100,10 +101,15 @@ const Sidebar = () => {
           <NavItem icon={BsFillPeopleFill}>
             <Link to={Links.ALL_PESSOAS}>Pessoas registradas</Link>
           </NavItem>
+
+          <NavItem icon={FaStickyNote}>
+            <Link to={Links.UPDATES}>Atualizações</Link>
+          </NavItem>
         </StyledList>
         <MenuButton onClick={toggleMenu}>
           <FaBars />
         </MenuButton>
+
         <DropdownMenu isOpen={menuOpen}>
           <NavItem icon={FaPeopleGroup}>
             <Link to={Links.HOME} onClick={toggleMenu}>
@@ -123,6 +129,11 @@ const Sidebar = () => {
           <NavItem icon={BsFillPeopleFill}>
             <Link to={Links.ALL_PESSOAS} onClick={toggleMenu}>
               Pessoas registradas
+            </Link>
+          </NavItem>
+          <NavItem icon={FaStickyNote}>
+            <Link to={Links.UPDATES} onClick={toggleMenu}>
+              Atualizações
             </Link>
           </NavItem>
         </DropdownMenu>

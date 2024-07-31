@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import apiPath from "@/context/Api";
 import { ReportDetailModel } from "../../context/Model";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +9,8 @@ const getLocalDateString = (date) => {
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
+
+const apiPath = import.meta.env.VITE_API_URL;
 
 export function useRelatorio(date) {
   const [relatorio, setRelatorio] = useState({ ...ReportDetailModel });

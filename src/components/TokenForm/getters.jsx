@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ServiceBookModel } from "@/context/Model";
-import apiPath from "@/context/Api";
+
+const apiPath = import.meta.env.VITE_API_URL;
 
 export function usePrioridades() {
   const [prioridades, setPrioridades] = useState([]);

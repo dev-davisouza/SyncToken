@@ -9,6 +9,7 @@ import Reports from "./pages/Reports";
 import People from "./pages/People";
 import ReportDetail from "./pages/ReportDetail";
 import Auth from "./pages/Auth";
+import Updates from "./pages/Updates";
 
 const AppContainer = styled.div`
   background-color: #fafafa;
@@ -49,6 +50,9 @@ function App() {
             element={<ReportDetail />}
           />
           <Route path={Links.ALL_PESSOAS} element={<People />} />
+          <Route path={Links.UPDATES} element={<Updates />} />
+
+          {/* IN TEST... */}
           <Route path={Links.AUTH} element={<Auth />} />
         </Routes>
       </MainContainer>

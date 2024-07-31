@@ -10,10 +10,11 @@ import {
 import reducer from "@/reducer";
 import { useEffect, useState } from "react";
 import { CardItem, CardValue } from "@/components/QueueTable/styles";
-import apiPath from "@/context/Api";
 import Loading from "@/components/Loader";
 
 export default function PeopleTable() {
+  const apiPath = import.meta.env.VITE_API_URL;
+
   const [pessoas, setPessoas] = useState([]);
 
   useEffect(() => {

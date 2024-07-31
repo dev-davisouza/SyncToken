@@ -2,9 +2,12 @@ import TokenForm from "@/components/TokenForm";
 import Container from "@/components/Container";
 import { useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
-import apiPath from "@/context/Api";
+import { useEffect } from "react";
 
 export default function ServiceBook() {
+  const apiPath = import.meta.env.VITE_API_URL;
+  useEffect(() => console.log(apiPath), []);
+
   const navigate = useNavigate();
 
   function handleSubmit(data, id) {

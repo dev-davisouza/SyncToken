@@ -3,11 +3,12 @@ import Container from "@/components/Container";
 import SubmitButton from "@/components/SubmitButton";
 import Message from "@/components/Message";
 import { Links } from "@/context/Links";
-import apiPath from "@/context/Api";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
+  const apiPath = import.meta.env.VITE_API_URL;
+
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");

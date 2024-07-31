@@ -6,6 +6,7 @@ export const Links = {
   RELATORIOS: "/relatorios",
   ALL_PESSOAS: "/pessoas",
   AUTH: "/auth",
+  UPDATES: "/notas-de-atualizações",
 };
 
 /*  

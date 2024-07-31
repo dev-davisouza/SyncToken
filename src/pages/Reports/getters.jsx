@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import apiPath from "@/context/Api";
 
 export function useRelatorios() {
+  const apiPath = import.meta.env.VITE_API_URL;
+
   const [relatorios, setRelatorios] = useState([]);
   useEffect(() => {
     fetch(`${apiPath}/relatorios/`, {

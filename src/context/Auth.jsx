@@ -1,8 +1,10 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiPath from "./Api";
 import { Links } from "./Links";
+
 const AuthContext = createContext();
+
+const apiPath = import.meta.env.VITE_API_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -16,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (username, password) => {
-    const response = await fetch(`${ApiPath}/api/token/`, {
+    const response = await fetch(`${apiPath}/api/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
