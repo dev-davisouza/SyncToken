@@ -29,3 +29,4 @@ braindump.txt
 certificate.crt
 certificate.key
 .env
+.prettierrc

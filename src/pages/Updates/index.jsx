@@ -15,8 +15,13 @@ export default function Updates() {
       <MainTitle>Versões do SyncToken</MainTitle>
       <Subtitle>
         O histórico com todos os lançamentos do SyncToken está disponível no{" "}
-        <UpdateLink href="">GitHub</UpdateLink>. A documentação mais recente
-        pode ser encontrada abaixo.
+        <UpdateLink
+          target="_blank"
+          href="https://github.com/dev-davisouza/SyncToken"
+        >
+          GitHub
+        </UpdateLink>
+        . A documentação mais recente pode ser encontrada abaixo.
       </Subtitle>
       <Note>
         <NoteHeader>Nota</NoteHeader>
@@ -25,9 +30,9 @@ export default function Updates() {
           SyncToken!
         </NoteBody>
       </Note>
-      <VersionsContainer>
+      {/*   <VersionsContainer>
         <h3>1.0 (Lançamento)</h3>
-      </VersionsContainer>
+      </VersionsContainer> */}
     </UpdateContainer>
   );
 }

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledNavItem = styled.li`
@@ -18,12 +19,14 @@ const StyledNavItem = styled.li`
   }
 `;
 
-const NavItem = ({ children, icon: Icon }) => {
+const NavItem = ({ to, children, icon: Icon }) => {
   return (
-    <StyledNavItem>
-      {Icon && <Icon />}
-      {children}
-    </StyledNavItem>
+    <Link to={to}>
+      <StyledNavItem>
+        {Icon && <Icon />}
+        {children}
+      </StyledNavItem>
+    </Link>
   );
 };
 

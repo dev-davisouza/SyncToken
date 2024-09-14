@@ -59,7 +59,7 @@ const DropdownMenu = styled.div`
   z-index: 1000;
 
   @media (max-width: 768px) {
-    display: ${(props) => (props.isOpen ? "flex" : "none")};
+    display: ${(props) => (props.isopen ? "flex" : "none")};
   }
 `;
 
@@ -86,55 +86,58 @@ const Sidebar = () => {
     <Header>
       <StyledNav>
         <StyledList>
-          <NavItem icon={FaPeopleGroup}>
-            <Link to={Links.HOME}>Fila</Link>
+          <NavItem to={Links.HOME} icon={FaPeopleGroup}>
+            Fila
           </NavItem>
 
-          <NavItem icon={FaBookBookmark}>
-            <Link to={Links.CRIAR_FICHA}>Livro de atendimento</Link>
+          <NavItem to={Links.CRIAR_FICHA} icon={FaBookBookmark}>
+            Livro de atendimento
           </NavItem>
 
-          <NavItem icon={FaBuffer}>
-            <Link to={Links.RELATORIOS}>Relatórios</Link>
+          <NavItem to={Links.RELATORIOS} icon={FaBuffer}>
+            Relatórios
           </NavItem>
 
-          <NavItem icon={BsFillPeopleFill}>
-            <Link to={Links.ALL_PESSOAS}>Pessoas registradas</Link>
+          <NavItem to={Links.ALL_PESSOAS} icon={BsFillPeopleFill}>
+            Pessoas registradas
           </NavItem>
 
-          <NavItem icon={FaStickyNote}>
-            <Link to={Links.UPDATES}>Atualizações</Link>
+          <NavItem to={Links.UPDATES} icon={FaStickyNote}>
+            Atualizações
           </NavItem>
         </StyledList>
         <MenuButton onClick={toggleMenu}>
           <FaBars />
         </MenuButton>
 
-        <DropdownMenu isOpen={menuOpen}>
-          <NavItem icon={FaPeopleGroup}>
-            <Link to={Links.HOME} onClick={toggleMenu}>
-              Fila
-            </Link>
+        {/* Phone responsive */}
+        <DropdownMenu isopen={menuOpen ? menuOpen : undefined}>
+          <NavItem icon={FaPeopleGroup} to={Links.HOME} onClick={toggleMenu}>
+            Fila
           </NavItem>
-          <NavItem icon={FaBookBookmark}>
-            <Link to={Links.CRIAR_FICHA} onClick={toggleMenu}>
-              Livro de atendimento
-            </Link>
+
+          <NavItem
+            icon={FaBookBookmark}
+            to={Links.CRIAR_FICHA}
+            onClick={toggleMenu}
+          >
+            Livro de atendimento
           </NavItem>
-          <NavItem icon={FaBuffer}>
-            <Link to={Links.RELATORIOS} onClick={toggleMenu}>
-              Relatórios
-            </Link>
+
+          <NavItem icon={FaBuffer} to={Links.RELATORIOS} onClick={toggleMenu}>
+            Relatórios
           </NavItem>
-          <NavItem icon={BsFillPeopleFill}>
-            <Link to={Links.ALL_PESSOAS} onClick={toggleMenu}>
-              Pessoas registradas
-            </Link>
+
+          <NavItem
+            icon={BsFillPeopleFill}
+            to={Links.ALL_PESSOAS}
+            onClick={toggleMenu}
+          >
+            Pessoas registradas
           </NavItem>
-          <NavItem icon={FaStickyNote}>
-            <Link to={Links.UPDATES} onClick={toggleMenu}>
-              Atualizações
-            </Link>
+
+          <NavItem icon={FaStickyNote} to={Links.UPDATES} onClick={toggleMenu}>
+            Atualizações
           </NavItem>
         </DropdownMenu>
       </StyledNav>

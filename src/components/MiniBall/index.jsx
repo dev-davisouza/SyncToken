@@ -1,45 +1,12 @@
-import styled from "styled-components";
 import { statusColors } from "@/context/Model";
-import { reducerColor } from "@/reducer";
-
-const dynamicTagReceiver = (tag) => {
-  return styled(tag)`
-    ${tag === "button" &&
-    `
-    all: unset; 
-    cursor: pointer;     
-    `}
-
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: ${(props) => props.$color};
-
-    @media (max-width: 768px) {
-      height: 12px;
-      width: 12px;
-    }
-
-    @media (max-width: 480px) {
-      height: 12px;
-      width: 12px;
-    }
-  `;
-};
-
-const LegendContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledP = styled.p`
-  margin-bottom: -2px;
-`;
-
-const StyledH2 = styled.h2`
-  margin-bottom: 4px;
-`;
+import { reducerColor } from "@/reducers/reducerSttsColor";
+import {
+  dynamicTagReceiver,
+  LegendContainer,
+  StyledP,
+  StyledH2,
+} from "./styles";
+import { useEffect } from "react";
 
 const BallSpan = dynamicTagReceiver("span");
 const BallButton = dynamicTagReceiver("button");

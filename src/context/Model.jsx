@@ -16,14 +16,7 @@ export const ReportDetailModel = {
 
 export const Prioridades = ["Não", "Sim"];
 
-export const Ações = [
-  "Atualização cadastral",
-  "Exclusão de pessoa",
-  "Criação de cadastro",
-  "Alteração de endereço",
-  "Transferência",
-  "Gestão de pessoa",
-].sort((a, b) => a.localeCompare(b));
+export const docTypes = ["CPF", "NIS"];
 
 export const statusColors = {
   yellow: "#ff0",
@@ -33,3 +26,6 @@ export const statusColors = {
 
 export const dataMsg =
   "Você não pode alterar a data, por padrão ela é sempre definida com o valor da data atual e será salva desta forma para fins de segurança e consistência nos dados.";
+
+export const updateMsg =
+  "A versão <b>1.1 de SyncToken</b> já está disponível! Esta atualização trouxe algumas melhorias no desempenho do site. Aproveite!";

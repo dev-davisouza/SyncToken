@@ -1,67 +1,16 @@
-import styled from "styled-components";
+import handleValues from "../Form/handles/handleValues";
+import {
+  Note,
+  StyledFlexContent,
+  StyledLabel,
+  dynamicDateReceiver,
+} from "./style";
 
-const dynamicDateReceiver = (tag) => {
-  return styled(tag)`
-    margin: 24px 0;
-    background-color: white;
-    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
-    width: 100%;
-    border: none;
-    font-size: 24px;
-    padding: 12px;
-    box-sizing: border-box;
-
-    @media (max-width: 768px) {
-      margin: 18px 0;
-      font-size: 18px;
-      padding: 10px;
-    }
-
-    @media (max-width: 480px) {
-      margin: 12px 0;
-      font-size: 16px;
-      padding: 8px;
-    }
-  `;
-};
-
-const StyledLabel = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-size: 18px;
-
-  @media (max-width: 768px) {
-    font-size: 15px;
-    margin-bottom: 6px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-`;
-
-const Note = styled.small`
-  display: block;
-  font-size: 12px;
-  margin: -12px 0 30px 24px;
-  color: red;
-
-  @media (max-width: 768px) {
-    font-size: 9px;
-    margin: -8px 0 24px 16px;
-  }
-`;
-
-const StyledFlexContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
+// Select or Input created before call inside JSX
 const StyledInput = dynamicDateReceiver("input");
+const StyledSelect = dynamicDateReceiver("select");
 
-export const Input = ({
+export const Field = ({
   name,
   type = "text",
   onChange,
@@ -72,66 +21,54 @@ export const Input = ({
   readOnly = false,
   value,
   note = "",
-  formmater,
+  options = null,
 }) => {
-  return (
-    <div>
-      {formmater && (
-        <StyledFlexContent>
-          <StyledLabel>{label}</StyledLabel>
-          <>{formmater}</>
-        </StyledFlexContent>
-      )}
-      <StyledLabel>{label}</StyledLabel>
-      <StyledInput
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        onChange={onChange}
-        disabled={disabled}
-        value={value}
-        key={name}
-        id={name}
-        readOnly={readOnly}
-      />
-      {note && <Note>{note}</Note>}
-    </div>
-  );
-};
-
-/* Dropdown */
-
-const StyledSelect = dynamicDateReceiver("select");
-const defaultEmptyOption = <option value=""></option>;
-
-export const Dropdown = ({
-  name,
-  onChange,
-  required = true,
-  label,
-  disabled = false,
-  readOnly = false,
-  value,
-  note = "",
-  children = defaultEmptyOption,
-}) => {
-  return (
-    <div className={label && `Select-${label}`}>
-      <StyledLabel>{label}</StyledLabel>
-      <StyledSelect
-        key={name}
-        id={name}
-        name={name}
-        required={required}
-        disabled={disabled}
-        readOnly={readOnly}
-        onChange={(e) => onChange(e)}
-        value={value}
-      >
-        {children}
-      </StyledSelect>
-      {note && <Note>{note}</Note>}
-    </div>
-  );
+  if (type === "select") {
+    return (
+      <>
+        <StyledLabel>{label}</StyledLabel>
+        <StyledSelect
+          name={name}
+          type={type}
+          required={required}
+          onChange={onChange}
+          disabled={disabled}
+          key={name}
+          id={name}
+          readOnly={readOnly}
+          value={value}
+        >
+          <option selected disabled value="">
+            Selecione uma opção de {label}
+          </option>
+          {options &&
+            options.map((opt) => (
+              <option key={opt} value={handleValues(opt)}>
+                {opt}
+              </option>
+            ))}
+        </StyledSelect>
+        {note && <Note>{note}</Note>}
+      </>
+    );
+  } else {
+    return (
+      <>
+        <StyledLabel>{label}</StyledLabel>
+        <StyledInput
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          onChange={onChange}
+          disabled={disabled}
+          value={value}
+          key={name}
+          id={name}
+          readOnly={readOnly}
+        />
+        {note && <Note>{note}</Note>}
+      </>
+    );
+  }
 };

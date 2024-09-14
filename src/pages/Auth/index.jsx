@@ -5,9 +5,10 @@ import Message from "@/components/Message";
 import { Links } from "@/context/Links";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import useContextAuth from "@/hooks/useContextAuth"; // Importando o hook de contexto de autenticação
 
 export default function Auth() {
-  const apiPath = import.meta.env.VITE_API_URL;
+  const { login } = useContextAuth(); // Obtendo a função de login do contexto
 
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +23,7 @@ export default function Auth() {
         state: { message: "Login executado com sucesso!" },
       });
     } catch (error) {
-      setMessage("Login failed!");
+      setMessage("Login falhou!");
     }
   }
 

@@ -1,15 +1,14 @@
 import styled from "styled-components";
 import GlobalStyles from "./components/GlobalStyles";
 import Sidebar from "./components/Header";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Links } from "./context/Links";
-import ServiceBook from "./pages/ServiceBook";
-import Queue from "./pages/Queue";
-import Reports from "./pages/Reports";
-import People from "./pages/People";
-import ReportDetail from "./pages/ReportDetail";
-import Auth from "./pages/Auth";
 import Updates from "./pages/Updates";
+import Queue from "./pages/Queue";
+import ServiceBook from "./pages/ServiceBook";
+import Reports from "./pages/Reports";
+import ReportDetail from "./pages/ReportDetail";
+import People from "./pages/People";
 
 const AppContainer = styled.div`
   background-color: #fafafa;
@@ -44,16 +43,14 @@ function App() {
             path={`${Links.CRIAR_FICHA}/:id/*`}
             element={<ServiceBook />}
           />
-          <Route path={Links.RELATORIOS} element={<Reports />} />
+          <Route path={`${Links.RELATORIOS}`} element={<Reports />} />
           <Route
             path={`${Links.RELATORIOS}/:id/*`}
             element={<ReportDetail />}
           />
-          <Route path={Links.ALL_PESSOAS} element={<People />} />
-          <Route path={Links.UPDATES} element={<Updates />} />
+          <Route path={`${Links.ALL_PESSOAS}`} element={<People />} />
 
-          {/* IN TEST... */}
-          <Route path={Links.AUTH} element={<Auth />} />
+          <Route path={Links.UPDATES} element={<Updates />} />
         </Routes>
       </MainContainer>
     </AppContainer>

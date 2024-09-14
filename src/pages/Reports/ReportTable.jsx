@@ -1,6 +1,5 @@
-import { ActionContainer, StyledCaption } from "@/components/QueueTable/styles";
-import SubmitButton from "@/components/SubmitButton";
-import { useRelatorios } from "./getters";
+import { StyledCaption, ActionContainer } from "@/components/Table/style";
+import Button from "@/components/Button";
 import Loading from "@/components/Loader";
 import Search from "@/components/Search";
 import { useNavigate } from "react-router-dom";
@@ -12,10 +11,15 @@ import {
   RelatoryCardNumber,
   RelatoryCardValue,
 } from "./Styles";
+import useRelatorioContext from "@/hooks/useRelatorioContext";
+import Paginator from "@/components/Paginator";
+import usePaginatorContext from "@/hooks/usePaginatorContext";
 
 export default function ReportTable() {
   const navigate = useNavigate();
-  const relatorios = useRelatorios();
+
+  const { relatorios, relatoriosCount } = useRelatorioContext();
+  const { direction } = usePaginatorContext();
 
   function handleViewRelatorio(id) {
     navigate(`${Links.RELATORIOS}/${id}`);
@@ -23,30 +27,38 @@ export default function ReportTable() {
 
   return relatorios.length !== 0 ? (
     <>
-      <Search placeholder="Filte por data!" />
+      <Search placeholder="Filtre por data!" />
       <StyledCaption>Relatórios diários</StyledCaption>
       <RelatoriesContainer>
-        {relatorios.map((relatorio) => (
-          <RelatoryCard>
-            <RelatoryCardNumber>{relatorio.data}</RelatoryCardNumber>
-            <RelatoryCardItem>
-              <div>Total de fichas:</div>
-              {relatorio.pessoas && (
-                <RelatoryCardValue>
-                  {relatorio.pessoas.length}
-                </RelatoryCardValue>
-              )}
-            </RelatoryCardItem>
-            <ActionContainer $opacity="1">
-              <SubmitButton
-                onClick={() => handleViewRelatorio(relatorio.data)}
-                type="button"
-              >
-                Vizualizar Livro
-              </SubmitButton>
-            </ActionContainer>
-          </RelatoryCard>
-        ))}
+        {relatorios.map((relatorio) => {
+          const date = new Date(`${relatorio.data}T00:00:00-03:00`);
+          return (
+            <RelatoryCard direction={direction}>
+              <RelatoryCardNumber>
+                {date.toLocaleDateString("pt-BR", {
+                  timeZone: "America/Recife", // Especifica o fuso horário
+                })}
+              </RelatoryCardNumber>
+              <RelatoryCardItem>
+                <div>Total de fichas:</div>
+                {relatorio && (
+                  <RelatoryCardValue>
+                    {relatorio.total_pessoas}
+                  </RelatoryCardValue>
+                )}
+              </RelatoryCardItem>
+              <ActionContainer $opacity="1">
+                <Button
+                  onClick={() => handleViewRelatorio(relatorio.data)}
+                  type="button"
+                >
+                  Visualizar Livro
+                </Button>
+              </ActionContainer>
+            </RelatoryCard>
+          );
+        })}
+        <Paginator totalItems={relatoriosCount} />
       </RelatoriesContainer>
     </>
   ) : (

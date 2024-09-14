@@ -1,3 +1,4 @@
+import { fadeInDown, fadeInUp } from "@/components/Table/style";
 import styled from "styled-components";
 
 export const RelatoriesContainer = styled.div`
@@ -16,6 +17,9 @@ export const RelatoryCard = styled.div`
   display: flex;
   flex-direction: column;
   width: max-content;
+  /* Adicionando animação baseada na direction */
+  animation: ${(props) => (props.direction === "up" ? fadeInUp : fadeInDown)} 1s
+    ease;
 `;
 
 export const RelatoryCardNumber = styled.h2`

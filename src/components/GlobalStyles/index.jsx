@@ -80,9 +80,6 @@ const GlobalStyles = createGlobalStyle`
   button,
   [type="button"],
   [type="reset"],
-  [type="submit"] {
-    -webkit-appearance: button;
-  }
   button::-moz-focus-inner,
   [type="button"]::-moz-focus-inner,
   [type="reset"]::-moz-focus-inner,
@@ -122,10 +119,7 @@ const GlobalStyles = createGlobalStyle`
   [type="number"]::-webkit-outer-spin-button {
     height: auto;
   }
-  [type="search"] {
-    -webkit-appearance: textfield; 
-    outline-offset: -2px; 
-  }
+ 
   [type="search"]::-webkit-search-decoration {
     -webkit-appearance: none;
   }

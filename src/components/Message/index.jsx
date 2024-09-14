@@ -1,48 +1,46 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { BolderMsg, MessageContent } from "./style";
+import useMessageContext from "@/hooks/useMessageContext";
 
-const MessageContent = styled.div`
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid #000;
-  margin: 0 auto;
-  text-align: center;
-  margin-bottom: 2rem;
-  border-radius: 5px;
+export default function Message({ interval = 3000, bolder = false }) {
+  const { messageContent, messageType, setMessageContent } =
+    useMessageContext();
 
-  ${(props) =>
-    props.$type === "success"
-      ? `color: #155724;
-    background-color: #D4EDDA;
-    border-color: #c3e6cb;`
-      : `color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;`}
-`;
-
-export default function Message({ type, msg }) {
   const [visible, setVisible] = useState(false);
 
+  // handle visible
   useEffect(() => {
-    if (!msg) {
+    if (!messageContent) {
       setVisible(false);
       return;
     }
 
     setVisible(true);
 
+    // Scrolla até o topo do componente da mensagem
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 3000);
+      // Limpa a mensagem após o timer
+      setTimeout(() => setMessageContent(null), 300);
+    }, interval);
 
     return () => clearTimeout(timer);
-  }, [msg]);
+  }, [messageContent]);
 
   return (
     <>
       {visible && (
-        <MessageContent $type={type}>
-          <p>{msg}</p>
+        <MessageContent $type={messageType}>
+          {bolder ? (
+            <BolderMsg dangerouslySetInnerHTML={{ __html: messageContent }} />
+          ) : (
+            <p>{messageContent}</p>
+          )}
         </MessageContent>
       )}
     </>

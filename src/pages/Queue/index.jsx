@@ -1,29 +1,58 @@
-import QueueTable from "@/components/QueueTable";
+import { useEffect } from "react";
+import Table from "@/components/Table";
 import Container from "@/components/Container";
 import { Legend } from "@/components/MiniBall";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import useFichaContext from "@/hooks/useFichaContext";
+import mapperTheaders from "@/Middlewares/mapperTheaders";
+import { useParams } from "react-router-dom";
 import Message from "@/components/Message";
-import { usePeopleFichas } from "@/components/QueueTable/handles.jsx";
+import usePaginatorContext from "@/hooks/usePaginatorContext";
+import { updateMsg } from "@/context/Model";
+import useMessageContext from "@/hooks/useMessageContext";
 
 export default function Queue() {
-  const [queueMessage, setQueueMessage] = useState("");
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { id } = useParams();
+  const { tableFichas, totalFichas } = useFichaContext();
+  const { setPerPage } = usePaginatorContext();
+  const { setMessageContent, setTypeMessage, messageContent } =
+    useMessageContext(); // Desestrutura a mensagem e o tipo, se existirem
+
+  if (!tableFichas) {
+    return <div>Carregando dados...</div>;
+  }
 
   useEffect(() => {
-    if (location.state && location.state.message) {
-      setQueueMessage(location.state.message);
-      // Limpar a mensagem do estado de navegação
-      navigate(location.pathname, { replace: true, state: {} });
+    // Resetar perPage ao valor padrão sempre que a rota mudar
+    setPerPage(10);
+  }, [id]);
+
+  // É preciso se trancar por dentro e jogar a chave fora...
+  useEffect(() => {
+    if (!sessionStorage.getItem("msg")) {
+      setMessageContent(updateMsg);
+      setTypeMessage("info");
+      sessionStorage.setItem("msg", true);
     }
-  }, [location.state, location.pathname, navigate]);
+  }, [sessionStorage.getItem("msg")]);
 
   return (
     <Container>
-      <Message type="success" msg={queueMessage} />
+      {messageContent === updateMsg ? (
+        <Message bolder interval={10000} />
+      ) : (
+        <Message />
+      )}
       <Legend />
-      <QueueTable />
+      {tableFichas && (
+        <Table
+          caption={"Fila das Fichas"}
+          count={totalFichas}
+          query={tableFichas}
+          bodyExtraEmptySpace={true}
+          headerExtraEmptySpace={true}
+          hooks={useFichaContext}
+        />
+      )}
     </Container>
   );
 }

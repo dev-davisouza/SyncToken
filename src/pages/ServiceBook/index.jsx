@@ -1,42 +1,45 @@
-import TokenForm from "@/components/TokenForm";
 import Container from "@/components/Container";
-import { useNavigate } from "react-router-dom";
-import { Links } from "@/context/Links";
-import { useEffect } from "react";
+import Form from "@/components/Form";
+import useHeaders from "@/hooks/useHeaders";
+import useFichaContext from "@/hooks/useFichaContext";
+import filterFields from "@/Middlewares/filterFields";
+import handleSubmit from "./handleSubmit";
+import sortFields from "@/Middlewares/sortFields";
+import useMessageContext from "@/hooks/useMessageContext";
+import Message from "@/components/Message";
+import { useEffect, useState } from "react";
 
 export default function ServiceBook() {
-  const apiPath = import.meta.env.VITE_API_URL;
-  useEffect(() => console.log(apiPath), []);
+  const { fichas, fetchModel } = useFichaContext();
+  const fieldsToRemove = ["last_update", "NdaFicha", "created_at"];
+  const selectFields = ["DocType", "Ação", "Prioridade", "Status"];
+  const { messageContent } = useMessageContext(); // Desestrutura a mensagem
+  // Estado para armazenar os cabeçalhos ou dados que você precisa após a chamada de fetchModel
+  const [headers, setHeaders] = useState([]);
 
-  const navigate = useNavigate();
-
-  function handleSubmit(data, id) {
-    const method = id ? "PATCH" : "POST";
-    const url = id
-      ? `${apiPath}/pessoas-all/${id}/`
-      : `${apiPath}/pessoas-all/`;
-
-    fetch(url, {
-      method: method,
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((resp) => resp.json())
-      .then(() => {
-        const message =
-          method === "PATCH"
-            ? "Ficha editada com sucesso!"
-            : "Pessoa adicionada com sucesso!";
-
-        navigate(Links.HOME, { state: { message } });
-      });
-  }
+  useEffect(() => {
+    async function getModel() {
+      const response = await fetchModel();
+      const model = Object.values(response);
+      setHeaders(model);
+    }
+    getModel();
+  }, []);
 
   return (
     <Container>
-      <TokenForm handleSubmit={handleSubmit} />
+      {console.log(headers)}
+      {messageContent && <Message />}
+      {headers.length > 0 && (
+        <Form
+          Legend="Livro de atendimento"
+          textFields={sortFields(filterFields(headers, fieldsToRemove), [
+            "DocType",
+          ])}
+          selectFields={selectFields}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </Container>
   );
 }

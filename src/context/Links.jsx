@@ -1,23 +1,11 @@
-import { createContext, useState } from "react";
-
 export const Links = {
   HOME: "/",
-  CRIAR_FICHA: "/criar-ficha",
+  CRIAR_FICHA: "/livro-de-atendimento",
   RELATORIOS: "/relatorios",
   ALL_PESSOAS: "/pessoas",
   AUTH: "/auth",
   UPDATES: "/notas-de-atualizações",
 };
 
-/*  
-export const LinksContext = createContext();
-
-export const LinksProvider = ({ children }) => {
-  const [link, setLink] = useState([]);
-  return (
-    <LinksContext.Provider value={{ link, setLink }}>
-      {children}
-    </LinksContext.Provider>
-  );
-};
-*/
+// Variável de ambiente configurada no arquivo .env da lib dotenv
+export const apiPath = import.meta.env.VITE_API_URL;
