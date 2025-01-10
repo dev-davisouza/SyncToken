@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import FichaReducer from "@/reducers/FichaReducer";
 import { apiPath } from "@/context/Links";
 import usePaginatorContext from "@/hooks/usePaginatorContext";
 import useTriggerContext from "@/hooks/useTriggerContext";
@@ -20,19 +19,20 @@ export function RelatorioProvider({ children }) {
 
   // Get dos relatórios
   useEffect(() => {
-    fetch(`${apiPath}/relatorios/?page_size=${perPage}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: access,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        setRelatoriosCount(data.count);
-        setRelatorios(data.results);
-      });
-  }, [perPage, updatedTrigger]);
+    access &&
+      fetch(`${apiPath}/relatorios/?page_size=${perPage}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: access,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          setRelatoriosCount(data.count);
+          setRelatorios(data.results);
+        });
+  }, [perPage, updatedTrigger, access]);
 
   return (
     <RelatorioContext.Provider

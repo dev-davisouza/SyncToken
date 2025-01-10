@@ -24,13 +24,12 @@ export default function useFichaContext() {
   const { activateTrigger } = useTriggerContext();
   const navigate = useNavigate();
   const { setMessageContent, setTypeMessage } = useMessageContext();
-  const { fichas, dispatch, totalFichas, tableFichas, loading, setLoading } =
+  const { fichas, totalFichas, tableFichas, loading, setLoading } =
     useContext(FichaContext);
 
   return {
     editFicha: (ficha, dataToChange) =>
       editFicha(
-        dispatch,
         ficha,
         dataToChange,
         activateTrigger,

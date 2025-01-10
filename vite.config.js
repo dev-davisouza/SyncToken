@@ -8,4 +8,10 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: "/src" }],
   },
+  /* server: {
+    https: {
+      key: fs.readFileSync("certificate.key"),
+      cert: fs.readFileSync("certificate.crt"),
+    },
+  }, */
 });

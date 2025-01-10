@@ -1,9 +1,7 @@
 import { apiPath } from "@/context/Links";
-import { EDIT_FICHA } from "@/reducers/FichaReducer";
 
 /**
  *
- * @param {*} dispatch
  * @param {*} ficha
  * @param {{}} dataToChange
  * @param {*} activateTrigger
@@ -11,7 +9,6 @@ import { EDIT_FICHA } from "@/reducers/FichaReducer";
  * @param {*} setTypeMessage
  */
 export default async function editFicha(
-  dispatch,
   ficha,
   dataToChange,
   activateTrigger,
@@ -41,8 +38,6 @@ export default async function editFicha(
     }
     // Dispara o trigger de atualização após o PUT
     activateTrigger();
-
-    dispatch({ type: EDIT_FICHA, payload: updatedFicha });
   } catch (error) {
     console.error("Erro ao editar ficha:", error);
     throw new Error("Erro ao editar ficha:", error);

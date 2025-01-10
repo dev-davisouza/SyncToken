@@ -5,7 +5,6 @@ import handleNIS_CPF from "./handleNIS_CPF";
  * Função para manipular mudanças nos campos do formulário.
  * @param {Object} e - Evento de mudança.
  * @param {Object} formData - Dados atuais do formulário.
- * @param {React.Dispatch<React.SetStateAction<object>>} setFormData - Função para atualizar o estado do formulário.
  * @param {import("react-router-dom").NavigateFunction} navigate - Função para redirecionamento de rotas.
  * @param {string|null} id - ID opcional usado para identificar registros existentes.
  */
