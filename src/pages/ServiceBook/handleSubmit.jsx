@@ -7,20 +7,31 @@ export default async function handleSubmit(
   navigate,
   activateTrigger,
   setMessageContent,
-  setTypeMessage
+  setTypeMessage,
+  access
 ) {
+  // Verifica se existem campos específicos para serem removidos
+  const forbiddenFields = ["last_update", "created_at"];
+  forbiddenFields.forEach((field) => {
+    if (data.hasOwnProperty(field)) {
+      delete data[field];
+    }
+  });
+
   const method = param ? "PUT" : "POST";
   const url = param
     ? `${apiPath}/pessoas-all/${param}/`
     : `${apiPath}/pessoas-all/`;
 
   try {
+    console.log(data);
     const response = await fetch(url, {
       method: method,
       headers: {
         "Content-type": "application/json",
+        Authorization: access,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ id: data.NIS_CPF, ...data }),
     });
 
     if (response.ok) {
@@ -44,6 +55,6 @@ export default async function handleSubmit(
       setTypeMessage("error");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error.message);
   }
 }

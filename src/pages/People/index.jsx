@@ -9,29 +9,53 @@ import { useParams } from "react-router-dom";
 import useMessageContext from "@/hooks/useMessageContext";
 import Message from "@/components/Message";
 import useTriggerContext from "@/hooks/useTriggerContext";
+import Loading from "@/components/Loader";
+import Search from "@/components/Search";
 
-export default function People() {
-  const { updatedTrigger } = useTriggerContext();
+export default function People({ isForSelection = false }) {
+  const { updatedTrigger, activateTrigger } = useTriggerContext();
   const { id } = useParams();
   const { setPerPage, perPage } = usePaginatorContext();
-  const { fetchAllPessoas } = useFichaContext();
-  const { messageContent } = useMessageContext();
+  const { fetchAllPessoas, loading, setLoading } = useFichaContext();
+  const { messageContent, setMessageContent, setTypeMessage } =
+    useMessageContext();
   const [pessoas, setPessoas] = useState([]);
   const [totalPessoas, setTotalPessoas] = useState(0);
 
+  // Estados de pesquisa (filtro)
+  const [searchValue, setSearchValue] = useState(null);
+
   // Busque as pessoas
   useEffect(() => {
-    async function getAllPessas() {
-      const [response, count] = await fetchAllPessoas();
+    async function getAllPessoas() {
+      const nameFilter = searchValue ? `Nome=${searchValue}` : "";
+      setLoading(true);
+      const [response, count] = isForSelection
+        ? await fetchAllPessoas(`${nameFilter}&isUnderInvestigation=0`)
+        : await fetchAllPessoas(`${nameFilter}`);
+
+      if (nameFilter && count == 0) {
+        setMessageContent(
+          "Nenhuma pessoa encontrada pela pesquisa; tente novamente."
+        );
+        setTypeMessage("error");
+        return;
+      }
       setTotalPessoas(count);
       setPessoas(response);
+      setLoading(false);
     }
-    getAllPessas();
-  }, [perPage]);
+    getAllPessoas();
+  }, [perPage, updatedTrigger]);
 
   // Filtra `fichas` somente quando eles mudarem
   const filteredPessoas = useMemo(() => {
-    const fieldsToRemove = ["Status", "DocType", "NdaFicha"];
+    const fieldsToRemove = [
+      "Status",
+      "DocType",
+      "NdaFicha",
+      "isUnderInvestigation",
+    ];
     if (pessoas.length > 0)
       return pessoas.map((pessoa) => removeFields(pessoa, fieldsToRemove));
     else return [];
@@ -42,12 +66,31 @@ export default function People() {
     setPerPage(10);
   }, [id]);
 
+  if (loading) {
+    return (
+      <Container>
+        <Loading />
+      </Container>
+    );
+  }
+
+  const handleSearch = () => {
+    activateTrigger();
+  };
+
   return (
     filteredPessoas.length > 0 &&
     totalPessoas > 0 && (
       <Container>
+        <Search
+          placeholder="Pesquise por nome"
+          setSearchValue={setSearchValue}
+          searchValue={searchValue}
+          onSubmit={handleSearch}
+        />
         {messageContent && <Message />}
         <Table
+          isForSelection={isForSelection}
           caption={"Pessoas Registradas"}
           query={filteredPessoas}
           count={totalPessoas}
@@ -58,8 +101,3 @@ export default function People() {
     )
   );
 }
-
-/* 
-  DEIXA RESPONSIVO AÊ MISERA E COMPRETA AÍ O BAGUI
-  DA PÁGINA DE UPDATES
-*/

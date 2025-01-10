@@ -1,28 +1,13 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { Link, useLocation } from "react-router-dom";
+import { StyledNavItem } from "./style";
 
-const StyledNavItem = styled.li`
-  font-size: 20px;
-  cursor: pointer;
-  color: black;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: fit-content;
+const NavItem = ({ to, children, icon: Icon, onClick }) => {
+  const location = useLocation();
+  const isActive = location.pathname == to;
 
-  @media (max-width: 768px) {
-    font-size: 18px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 18px;
-  }
-`;
-
-const NavItem = ({ to, children, icon: Icon }) => {
   return (
-    <Link to={to}>
-      <StyledNavItem>
+    <Link onClick={onClick} to={to}>
+      <StyledNavItem className={isActive ? "active" : ""}>
         {Icon && <Icon />}
         {children}
       </StyledNavItem>

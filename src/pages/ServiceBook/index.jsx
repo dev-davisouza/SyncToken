@@ -12,7 +12,13 @@ import { useEffect, useState } from "react";
 export default function ServiceBook() {
   const { fichas, fetchModel } = useFichaContext();
   const fieldsToRemove = ["last_update", "NdaFicha", "created_at"];
-  const selectFields = ["DocType", "Ação", "Prioridade", "Status"];
+  const selectFields = [
+    "DocType",
+    "Ação",
+    "Prioridade",
+    "Status",
+    "benefit_situation",
+  ];
   const { messageContent } = useMessageContext(); // Desestrutura a mensagem
   // Estado para armazenar os cabeçalhos ou dados que você precisa após a chamada de fetchModel
   const [headers, setHeaders] = useState([]);
@@ -28,7 +34,6 @@ export default function ServiceBook() {
 
   return (
     <Container>
-      {console.log(headers)}
       {messageContent && <Message />}
       {headers.length > 0 && (
         <Form

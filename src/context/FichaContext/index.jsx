@@ -4,11 +4,14 @@ import { apiPath } from "@/context/Links";
 import { SET_FICHAS } from "@/reducers/FichaReducer";
 import usePaginatorContext from "@/hooks/usePaginatorContext";
 import useTriggerContext from "@/hooks/useTriggerContext";
+import useAuthContext from "@/hooks/useAuthContext";
 
 const FichaContext = createContext();
 FichaContext.displayName = "FichaContext";
 
 export function FichaProvider({ children }) {
+  // Token de acesso a API
+  const { access } = useAuthContext();
   // Triggers
   const { updatedTrigger } = useTriggerContext();
   // Chamando o Paginador
@@ -20,7 +23,13 @@ export function FichaProvider({ children }) {
   const [totalFichas, setTotalFichas] = useState(0);
 
   useEffect(() => {
-    fetch(`${apiPath}/pessoas/?page_size=${perPage}`)
+    fetch(`${apiPath}/pessoas/?page_size=${perPage}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: access,
+      },
+    })
       .then((resp) => resp.json())
       .then((data) => {
         setTotalFichas(data.count);
@@ -33,7 +42,7 @@ export function FichaProvider({ children }) {
   const memoizedTableFichas = useMemo(() => {
     return fichas
       ? fichas.map((item) => {
-          const { DocType, last_update, ...rest } = item;
+          const { DocType, last_update, isUnderInvestigation, ...rest } = item;
           return rest;
         })
       : [];
@@ -53,6 +62,7 @@ export function FichaProvider({ children }) {
         totalFichas,
         tableFichas,
         loading, // Passa o estado de carregamento
+        setLoading,
       }}
     >
       {children}

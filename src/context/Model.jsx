@@ -24,6 +24,14 @@ export const statusColors = {
   red: "#cc0000",
 };
 
+export const benefitSituations = [
+  "Bloqueado",
+  "Cancelado",
+  "Suspenso",
+  "Liberado",
+  "Não contemplado",
+];
+
 export const dataMsg =
   "Você não pode alterar a data, por padrão ela é sempre definida com o valor da data atual e será salva desta forma para fins de segurança e consistência nos dados.";
 

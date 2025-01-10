@@ -1,3 +1,5 @@
+## SyncToken Refactor 1.1
+
 - Refatorar Queue🆗;
 - Refatorar Form🆗;
 
@@ -14,5 +16,5 @@
 - Crie o esquema de messages 🆗;
 - Crie animações suaves na renderização🆗;
 - `useMemo()` para melhor peformance, sobretudo, nos fetchs🆗;
-- Crie a página de Updates e insira no GitHub;
-- Crie filtros para facilitar a busca e filtragem de dados;
+- Crie a página de Updates e insira no GitHub 🆗;
+- Crie filtros para facilitar a busca e filtragem de dados🆗;

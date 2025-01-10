@@ -7,6 +7,7 @@ import { removeFields } from "@/Middlewares/filterFields";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Links } from "@/context/Links";
+import Loading from "@/components/Loader";
 
 export default function ReportDetailTable() {
   const navigate = useNavigate();
@@ -25,7 +26,12 @@ export default function ReportDetailTable() {
           navigate(Links.RELATORIOS);
         }
 
-        const fieldsToRemove = ["Status", "DocType", "NdaFicha"];
+        const fieldsToRemove = [
+          "Status",
+          "DocType",
+          "NdaFicha",
+          "isUnderInvestigation",
+        ];
         const filteredPessoas = fetchedPessoas.map((pessoa) =>
           removeFields(pessoa, fieldsToRemove)
         );
@@ -46,16 +52,16 @@ export default function ReportDetailTable() {
 
   const date = new Date(`${id}T00:00:00-03:00`);
   // JSX Return
-  return (
-    count && (
-      <Table
-        caption={`Relatório  ${date.toLocaleDateString("pt-BR", {
-          timeZone: "America/Recife", // Especifica o fuso horário
-        })}`}
-        query={pessoas}
-        count={count}
-        hooks={useFichaContext}
-      ></Table>
-    )
+  return count ? (
+    <Table
+      caption={`Relatório  ${date.toLocaleDateString("pt-BR", {
+        timeZone: "America/Recife", // Especifica o fuso horário
+      })}`}
+      query={pessoas}
+      count={count}
+      hooks={useFichaContext}
+    ></Table>
+  ) : (
+    <Loading />
   );
 }

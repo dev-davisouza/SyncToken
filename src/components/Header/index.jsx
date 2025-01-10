@@ -1,85 +1,41 @@
-import styled from "styled-components";
 import NavItem from "./NavItem";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Links } from "@/context/Links";
-import { FaBookBookmark, FaPeopleGroup, FaBuffer } from "react-icons/fa6";
-import { FaStickyNote } from "react-icons/fa";
+import {
+  FaBookBookmark,
+  FaPeopleGroup,
+  FaBuffer,
+  FaRegMoneyBill1,
+} from "react-icons/fa6";
+import { FaStickyNote, FaMoneyCheckAlt } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
-import { useState } from "react";
-
-const Header = styled.header`
-  padding: 25px;
-  background-color: #f2f2f2;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 15px 20px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 15px 20px;
-  }
-`;
-
-const StyledNav = styled.nav`
-  display: flex;
-  width: 100%;
-`;
-
-const StyledList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  justify-content: space-evenly;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const DropdownMenu = styled.div`
-  display: none;
-  flex-direction: column;
-  gap: 50px;
-  position: absolute;
-  top: 50px;
-  left: 20px;
-  background-color: #f2f2f2;
-  padding: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-
-  @media (max-width: 768px) {
-    display: ${(props) => (props.isopen ? "flex" : "none")};
-  }
-`;
-
-const MenuButton = styled.button`
-  display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
-`;
+import { useEffect, useState } from "react";
+import {
+  Header,
+  StyledList,
+  StyledNav,
+  DropdownMenu,
+  MenuButton,
+  NavText,
+} from "./style";
+import { useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+  }, [location.pathname]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const reloadPage = (path) => {
+    navigate(path);
   };
 
   return (
@@ -90,8 +46,16 @@ const Sidebar = () => {
             Fila
           </NavItem>
 
-          <NavItem to={Links.CRIAR_FICHA} icon={FaBookBookmark}>
+          <NavItem
+            onClick={() => reloadPage(Links.CRIAR_FICHA)}
+            to={Links.CRIAR_FICHA}
+            icon={FaBookBookmark}
+          >
             Livro de atendimento
+          </NavItem>
+
+          <NavItem to={Links.BENEFITS} icon={FaRegMoneyBill1}>
+            Gestão de benefícios
           </NavItem>
 
           <NavItem to={Links.RELATORIOS} icon={FaBuffer}>
@@ -146,3 +110,7 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+/* 
+  TU VAI TER QUE RECONSTRUIR O PROJETO DO ZERO
+*/

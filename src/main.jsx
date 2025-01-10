@@ -8,22 +8,28 @@ import { RelatorioProvider } from "@/context/RelatorioContext.jsx";
 import { PaginatorProvider } from "@/context/PaginatorContext.jsx";
 import { MessageProvider } from "@/context/MessageContext.jsx";
 import { TriggerProvider } from "./context/TriggerContext.jsx";
+import { PeopleSelectorProvider } from "./context/PeopleSelectorContext.jsx";
+import { ModalTriggerProvider } from "./context/ModalTriggerContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
       <TriggerProvider>
-        <PaginatorProvider>
-          <MessageProvider>
-            <FichaProvider>
-              <RelatorioProvider>
-                <FormProvider>
-                  <App />
-                </FormProvider>
-              </RelatorioProvider>
-            </FichaProvider>
-          </MessageProvider>
-        </PaginatorProvider>
+        <ModalTriggerProvider>
+          <PaginatorProvider>
+            <MessageProvider>
+              <FichaProvider>
+                <PeopleSelectorProvider>
+                  <RelatorioProvider>
+                    <FormProvider>
+                      <App />
+                    </FormProvider>
+                  </RelatorioProvider>
+                </PeopleSelectorProvider>
+              </FichaProvider>
+            </MessageProvider>
+          </PaginatorProvider>
+        </ModalTriggerProvider>
       </TriggerProvider>
     </AuthProvider>
   </React.StrictMode>

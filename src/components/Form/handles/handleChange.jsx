@@ -1,70 +1,86 @@
 import { apiPath, Links } from "@/context/Links";
 import handleNIS_CPF from "./handleNIS_CPF";
 
-// handleChange func
+/**
+ * Função para manipular mudanças nos campos do formulário.
+ * @param {Object} e - Evento de mudança.
+ * @param {Object} formData - Dados atuais do formulário.
+ * @param {React.Dispatch<React.SetStateAction<object>>} setFormData - Função para atualizar o estado do formulário.
+ * @param {import("react-router-dom").NavigateFunction} navigate - Função para redirecionamento de rotas.
+ * @param {string|null} id - ID opcional usado para identificar registros existentes.
+ */
 export default function handleChange(
   e,
   formData,
   setFormData,
   navigate,
-  id = null
+  id = null,
+  access
 ) {
   const { name, value } = e.target;
-  if (name === "NIS_CPF") {
-    // Obtém o tipo de documento atual do estado
-    const docType = formData["DocType"];
 
-    // Formata para o formato escolhido em DocType
+  if (name === "NIS_CPF") {
+    // Formata o valor do NIS_CPF
+    const docType = formData["DocType"];
     const formattedValue = handleNIS_CPF(docType, value);
     setFormData({ ...formData, [name]: formattedValue });
 
-    // Retira os hífens e/ou pontos
+    // Remove caracteres não numéricos
     const cleanValue = formattedValue.replace(/\D/g, "");
 
-    // Verifique se aquela pessoa já existe na base de dados
+    // Verifica se o CPF tem 11 dígitos e realiza a consulta
     if (cleanValue.length === 11) {
-      fetch(`${apiPath}/pessoas-all/${cleanValue}`)
-        .then((resp) => resp.json())
+      fetch(`${apiPath}/pessoas-all/${cleanValue}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: access,
+        },
+      })
+        .then((resp) => {
+          if (!resp.ok) {
+            throw new Error("Erro na consulta ao servidor.");
+          }
+          return resp.json();
+        })
         .then((data) => {
-          if (data.detail !== "No Pessoa matches the given query.") {
+          if (
+            data.detail !==
+            `Objeto de chave primária '${cleanValue}' não encontrado!`
+          ) {
             setFormData(data);
             navigate(`${Links.CRIAR_FICHA}/${cleanValue}`);
           } /* else {
-            setFormData((prevFormData) => {
-              const resetFormData = Object.keys(prevFormData).reduce(
-                (acc, key) => {
-                  acc[key] = ""; // Define o valor de cada campo como uma string vazia
-                  return acc;
-                },
-                {}
-              );
-
-              return resetFormData;
-            });
-            navigate(`${Links.CRIAR_FICHA}`);
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              NIS_CPF: "",
+            }));
           } */
+        })
+        .catch((err) => {
+          // Lidar com o erro da consulta
         });
     }
-    if (id) {
-      setFormData((prevFormData) => {
-        const resetFormData = Object.keys(prevFormData).reduce((acc, key) => {
+  } else {
+    // Atualiza qualquer outro campo
+    setFormData({ ...formData, [name]: value });
+  }
+
+  // Lógica opcional para redefinir o formulário se o ID for passado
+  if (id) {
+    setFormData((prevFormData) => ({ ...prevFormData }));
+    if (name == "NIS_CPF") {
+      if (value != id) {
+        const resetFormData = Object.keys(formData).reduce((acc, key) => {
           acc[key] = ""; // Define o valor de cada campo como uma string vazia
           return acc;
         }, {});
 
-        return resetFormData;
-      });
-      navigate(`${Links.CRIAR_FICHA}`);
+        setFormData(resetFormData);
+
+        // Redireciona
+        navigate(`${Links.CRIAR_FICHA}`);
+      }
     }
-  } else {
-    setFormData({ ...formData, [name]: value });
   }
 }
-
-/* 
-  MANO O PROBLEMA AGORA É O BACKEND OU O FRONT Q ESTÁ 
-  TENDO DIFULDADE PARA AJUSTAR O TIMEZONE AO DO BRAZIL
-  E ESTÁ GERANDO PROBLEMA DE INTEGRIDADE AO TENTAR SALVAR OS 
-  RELATÓRIOS NA BASE DE DADOS!
-
-*/

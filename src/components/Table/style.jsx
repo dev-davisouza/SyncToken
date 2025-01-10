@@ -45,6 +45,10 @@ export const Tr = styled.tr`
     opacity: 100%;
   }
 
+  &.person-selected {
+    background-color: #ccc;
+  }
+
   /* Animação para suavizar a transição dos itens da tabela condiconalmente */
 
   animation: ${(props) => (props.direction === "up" ? fadeInUp : fadeInDown)}
@@ -141,7 +145,12 @@ export const ActionContainer = styled.div`
 export const ActionButton = styled.button`
   all: unset;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 
+  &:hover {
+    color: #007bff;
+    transform: scale(1.1);
+  }
   @media (max-width: 768px) {
     font-size: 24px;
   }

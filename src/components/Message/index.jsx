@@ -15,6 +15,10 @@ export default function Message({ interval = 3000, bolder = false }) {
       return;
     }
 
+    if (messageType == "info") {
+      interval = 6000;
+    }
+
     setVisible(true);
 
     // Scrolla até o topo do componente da mensagem
@@ -46,3 +50,7 @@ export default function Message({ interval = 3000, bolder = false }) {
     </>
   );
 }
+
+// Deixa bonitin a tela de login ê misera, e ja se prepara pro deploy
+// Inclua também os outros cadastradores/
+// Exclua as rotas de metodos invasivos.

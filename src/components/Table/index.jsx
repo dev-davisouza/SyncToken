@@ -1,16 +1,18 @@
+// Imports
 import Paginator from "@/components/Paginator";
 import { handleQuery } from "./handles/handleQuery";
 import handleHeaders from "./handles/handleHeaders";
 import { StyledCaption, StyledFlexContainer, StyledTable } from "./style";
 import { Link, useNavigate } from "react-router-dom";
 import usePaginatorContext from "@/hooks/usePaginatorContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../Modal";
 import handleMobile from "./handles/handleMobile";
 import Loading from "@/components/Loader";
 import { Links } from "@/context/Links";
 
 export default function Table({
+  isForSelection,
   query,
   headerExtraEmptySpace = false,
   bodyExtraEmptySpace = false,
@@ -30,6 +32,7 @@ export default function Table({
     hook.loading = loading;
   }
 
+  // Modal handlers
   const handleOpenModal = (record) => {
     setSelectedRecord(record);
     setModalOpen(true);
@@ -55,6 +58,8 @@ export default function Table({
           open={isModalOpen}
           onClose={handleCloseModal}
           onConfirm={handleConfirmDelete}
+          bodyContent="Tem certeza que deseja excluir este registro?"
+          textButton="Excluir"
         />
         <StyledCaption>{caption && caption}</StyledCaption>
         <StyledFlexContainer>
@@ -64,6 +69,7 @@ export default function Table({
             <tbody>
               {hooks
                 ? handleQuery(
+                    isForSelection,
                     query,
                     bodyExtraEmptySpace,
                     handleOpenModal,
@@ -73,6 +79,7 @@ export default function Table({
                     hook.getFicha
                   )
                 : handleQuery(
+                    isForSelection,
                     query,
                     bodyExtraEmptySpace,
                     handleOpenModal,

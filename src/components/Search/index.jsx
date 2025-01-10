@@ -1,82 +1,36 @@
-import { styled } from "styled-components";
-import { FaSearch } from "react-icons/fa";
+import { SearchIcon, StyledContainer, StyledInputText } from "./style";
+import { Note } from "../Field/style";
 
-const StyledContainer = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 300px;
-  margin-left: auto;
+const Search = ({ placeholder, setSearchValue, searchValue, onSubmit }) => {
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onSubmit();
+    }
+  };
 
-  @media (max-width: 768px) {
-    margin: 0 auto;
-  }
-
-  @media (max-width: 480px) {
-    margin: 0 auto;
-  }
-`;
-
-const StyledInputText = styled.input`
-  height: 40px;
-  padding: 12px 50px 12px 16px;
-  border-radius: 10px;
-  border: 2px solid #d9d9d9;
-  background: transparent;
-  width: 100%;
-  box-sizing: border-box;
-  color: black;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 18px;
-    height: 48px;
-    padding: 10px 40px 10px 14px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 16px;
-    height: 40px;
-    padding: 8px 35px 8px 12px;
-  }
-`;
-
-const SearchIcon = styled(FaSearch)`
-  position: absolute;
-  right: 16px;
-  width: 22px;
-  height: 22px;
-  opacity: 50%;
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-  &:hover {
-    opacity: 100%;
-  }
-
-  @media (max-width: 768px) {
-    right: 14px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 480px) {
-    right: 12px;
-    width: 22px;
-    height: 22px;
-  }
-`;
-
-const Search = ({ placeholder }) => {
   return (
-    <StyledContainer>
-      <StyledInputText placeholder={placeholder} />
-      <SearchIcon>
-        <FaSearch />
-      </SearchIcon>
-    </StyledContainer>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "right",
+        textAlign: "right",
+      }}
+    >
+      <StyledContainer>
+        <StyledInputText
+          value={searchValue ? searchValue : ""}
+          type="search"
+          placeholder={placeholder}
+          onKeyUp={handleKeyPress}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <SearchIcon onClick={onSubmit} />
+      </StyledContainer>
+      <div style={{ margin: "15px 15px 0 0" }}>
+        <Note>Nota: Somente pesquisa por nomes funcionam!</Note>
+      </div>
+    </div>
   );
 };
 

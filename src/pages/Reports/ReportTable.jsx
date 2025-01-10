@@ -14,26 +14,42 @@ import {
 import useRelatorioContext from "@/hooks/useRelatorioContext";
 import Paginator from "@/components/Paginator";
 import usePaginatorContext from "@/hooks/usePaginatorContext";
+import Filter from "./Filter";
+import { useEffect, useState } from "react";
 
-export default function ReportTable() {
+export default function ReportTable({}) {
   const navigate = useNavigate();
 
-  const { relatorios, relatoriosCount } = useRelatorioContext();
-  const { direction } = usePaginatorContext();
+  const { relatorios } = useRelatorioContext();
+  const [filteredRelatorios, setFilteredRelatorios] = useState([]);
+  const [filteredRelatoriosCount, setFilteredRelatoriosCount] = useState(0);
+
+  useEffect(() => {
+    if (relatorios.length > 0 && filteredRelatorios.length <= 0) {
+      setFilteredRelatorios(relatorios);
+    }
+  }, [relatorios]);
+
+  const { direction, perPage } = usePaginatorContext();
 
   function handleViewRelatorio(id) {
     navigate(`${Links.RELATORIOS}/${id}`);
   }
 
-  return relatorios.length !== 0 ? (
+  return filteredRelatorios.length !== 0 ? (
     <>
-      <Search placeholder="Filtre por data!" />
+      {/* The Filter */}
+      <Filter
+        setFilteredRelatorios={setFilteredRelatorios}
+        perPage={perPage}
+        setFilteredRelatoriosCount={setFilteredRelatoriosCount}
+      />
       <StyledCaption>Relatórios diários</StyledCaption>
       <RelatoriesContainer>
-        {relatorios.map((relatorio) => {
+        {filteredRelatorios.map((relatorio) => {
           const date = new Date(`${relatorio.data}T00:00:00-03:00`);
           return (
-            <RelatoryCard direction={direction}>
+            <RelatoryCard key={date} direction={direction}>
               <RelatoryCardNumber>
                 {date.toLocaleDateString("pt-BR", {
                   timeZone: "America/Recife", // Especifica o fuso horário
@@ -58,7 +74,7 @@ export default function ReportTable() {
             </RelatoryCard>
           );
         })}
-        <Paginator totalItems={relatoriosCount} />
+        <Paginator totalItems={filteredRelatoriosCount} />
       </RelatoriesContainer>
     </>
   ) : (

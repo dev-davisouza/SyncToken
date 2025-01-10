@@ -4,7 +4,8 @@ export const Links = {
   RELATORIOS: "/relatorios",
   ALL_PESSOAS: "/pessoas",
   AUTH: "/auth",
-  UPDATES: "/notas-de-atualizações",
+  UPDATES: "/notas-de-atualizacoes",
+  BENEFITS: "/gestao-de-beneficios",
 };
 
 // Variável de ambiente configurada no arquivo .env da lib dotenv

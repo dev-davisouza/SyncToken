@@ -1,5 +1,6 @@
 import {
   Actions,
+  BodyContent,
   CancelButton,
   CloseButton,
   ConfirmButton,
@@ -9,21 +10,30 @@ import {
 } from "./style";
 import { CgClose } from "react-icons/cg";
 
-export default function Modal({ open, onClose, onConfirm }) {
+export default function Modal({
+  open,
+  onClose,
+  onConfirm,
+  bodyContent,
+  textButton,
+  buttonColor = "#d9534f",
+}) {
   if (!open) return null;
 
   return (
     <>
-      <Overlay onClick={onClose} />
-      <StyledDialog open={open}>
+      <Overlay className={open ? "open" : ""} onClick={onClose} />
+      <StyledDialog className={open ? "open" : ""} open={open}>
         <ModalContent>
           <CloseButton onClick={onClose}>
             <CgClose />
           </CloseButton>
-          <p>Tem certeza que deseja excluir este registro?</p>
+          <BodyContent>{bodyContent}</BodyContent>
           <Actions>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
-            <ConfirmButton onClick={onConfirm}>Excluir</ConfirmButton>
+            <ConfirmButton $buttonColor={buttonColor} onClick={onConfirm}>
+              {textButton}
+            </ConfirmButton>
           </Actions>
         </ModalContent>
       </StyledDialog>

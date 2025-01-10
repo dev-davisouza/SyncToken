@@ -3,11 +3,14 @@ import FichaReducer from "@/reducers/FichaReducer";
 import { apiPath } from "@/context/Links";
 import usePaginatorContext from "@/hooks/usePaginatorContext";
 import useTriggerContext from "@/hooks/useTriggerContext";
+import useAuthContext from "@/hooks/useAuthContext";
 
 const RelatorioContext = createContext();
 RelatorioContext.displayName = "RelatorioContext";
 
 export function RelatorioProvider({ children }) {
+  // Token de acesso
+  const { access } = useAuthContext();
   // Triggers
   const { updatedTrigger } = useTriggerContext();
   // Estados
@@ -17,7 +20,13 @@ export function RelatorioProvider({ children }) {
 
   // Get dos relatórios
   useEffect(() => {
-    fetch(`${apiPath}/relatorios/?page_size=${perPage}`)
+    fetch(`${apiPath}/relatorios/?page_size=${perPage}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: access,
+      },
+    })
       .then((resp) => resp.json())
       .then((data) => {
         setRelatoriosCount(data.count);

@@ -1,55 +1,86 @@
-import { Input } from "@/components/Field";
 import Container from "@/components/Container";
-import SubmitButton from "@/components/SubmitButton";
+import Form from "@/components/Form";
 import Message from "@/components/Message";
-import { Links } from "@/context/Links";
-import { useState, useContext } from "react";
+import { apiPath, Links } from "@/context/Links";
+import useAuthContext from "@/hooks/useAuthContext";
+import useFormContext from "@/hooks/useFormContext";
+import useMessageContext from "@/hooks/useMessageContext";
+import hash from "@/utils/hash";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useContextAuth from "@/hooks/useContextAuth"; // Importando o hook de contexto de autenticação
 
 export default function Auth() {
-  const { login } = useContextAuth(); // Obtendo a função de login do contexto
-
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const { messageContent, setMessageContent, setTypeMessage } =
+    useMessageContext();
   const navigate = useNavigate();
+  const { formData, setFormData } = useFormContext();
+  const { setAccess, isAuth } = useAuthContext();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      await login(user, password); // Chame a função de login do contexto
-      navigate(Links.HOME, {
-        state: { message: "Login executado com sucesso!" },
-      });
-    } catch (error) {
-      setMessage("Login falhou!");
+  useEffect(() => {
+    if (isAuth) {
+      navigate(Links.HOME);
     }
-  }
+  }, []);
+  const handleSubmit = async () => {
+    const { user, password } = formData;
+
+    try {
+      const response = await fetch(`${apiPath}/digitadores/login`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          user: user,
+          password: hash(password),
+        }),
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        if (!json.accessToken) {
+          setAccess(null);
+        } else {
+          setAccess(`Bearer ${json.accessToken}`);
+          navigate(Links.HOME);
+          // Dando boas vindas ao usuário recém logado:
+          setTypeMessage("info");
+          setMessageContent(
+            `Saudações ${user}! Aproveite a nova versão de SyncToken`
+          );
+        }
+      } else {
+        const json = await response.json();
+        // Pega a mensagem de erro
+        const msg = Object.values(json)[0].toString();
+
+        setMessageContent(msg);
+        setTypeMessage("error");
+
+        const resetFormData = Object.keys(formData).reduce((acc, key) => {
+          acc[key] = ""; // Define o valor de cada campo como uma string vazia
+          return acc;
+        }, {});
+
+        setFormData(resetFormData);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <Container>
-      {message && <Message type="error" msg={message} />}
-      <form onSubmit={handleSubmit}>
-        <Input
-          name="user"
-          type="text"
-          placeholder="Seu usuário de acesso"
-          label="Usuário:"
-          note="Somente usuários criados pelo administrador podem entrar!"
-          onChange={(e) => setUser(e.target.value)}
-          value={user}
-        />
-        <Input
-          name="password"
-          type="password"
-          placeholder="Seu senha de acesso"
-          label="Senha:"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-        />
-        <SubmitButton type="submit">Login</SubmitButton>
-      </form>
+      {messageContent && <Message />}
+      <Form
+        Legend="Login"
+        textFields={["user", "password"]}
+        selectFields={[]}
+        textButton={"Autenticar"}
+        handleSubmit={handleSubmit}
+      />
     </Container>
   );
 }
+
+// AGORA É SÓ FAZER O MALABARISMO APIEICO E GUARDAR A INFO EM SESSÃO

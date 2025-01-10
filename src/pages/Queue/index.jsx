@@ -9,9 +9,11 @@ import Message from "@/components/Message";
 import usePaginatorContext from "@/hooks/usePaginatorContext";
 import { updateMsg } from "@/context/Model";
 import useMessageContext from "@/hooks/useMessageContext";
+import useTriggerContext from "@/hooks/useTriggerContext";
 
 export default function Queue() {
   const { id } = useParams();
+  const { activateTrigger } = useTriggerContext();
   const { tableFichas, totalFichas } = useFichaContext();
   const { setPerPage } = usePaginatorContext();
   const { setMessageContent, setTypeMessage, messageContent } =
@@ -27,14 +29,14 @@ export default function Queue() {
   }, [id]);
 
   // É preciso se trancar por dentro e jogar a chave fora...
-  useEffect(() => {
+  /* useEffect(() => {
     if (!sessionStorage.getItem("msg")) {
       setMessageContent(updateMsg);
       setTypeMessage("info");
       sessionStorage.setItem("msg", true);
     }
   }, [sessionStorage.getItem("msg")]);
-
+ */
   return (
     <Container>
       {messageContent === updateMsg ? (
@@ -56,3 +58,11 @@ export default function Queue() {
     </Container>
   );
 }
+
+/**
+ * Passo a passo:
+ * - Bota modal quando for confirmar um caso de averiguacion✅;
+ * - Qualquer mudança no banco deve fazer TODOS os componentes refazerem a request
+ * - Tentar passar os dados que estão sob ordem do Django para Cá fio;
+ *
+ */

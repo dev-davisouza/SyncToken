@@ -1,17 +1,23 @@
 import { apiPath } from "@/context/Links";
 import { EDIT_FICHA } from "@/reducers/FichaReducer";
 
-/* 
-dataToChange: {key: value, key2: value2...}
-*/
-
+/**
+ *
+ * @param {*} dispatch
+ * @param {*} ficha
+ * @param {{}} dataToChange
+ * @param {*} activateTrigger
+ * @param {*} setMessageContent
+ * @param {*} setTypeMessage
+ */
 export default async function editFicha(
   dispatch,
   ficha,
   dataToChange,
   activateTrigger,
   setMessageContent,
-  setTypeMessage
+  setTypeMessage,
+  access
 ) {
   try {
     // Verifica se o dataToChange tem apenas uma chave e se essa chave é "Status"
@@ -22,6 +28,7 @@ export default async function editFicha(
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: access,
       },
       body: JSON.stringify({ ...ficha, ...dataToChange }),
     });

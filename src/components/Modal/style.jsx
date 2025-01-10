@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 // Styled Components
 export const Overlay = styled.div`
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
   right: 0;
@@ -13,9 +13,9 @@ export const Overlay = styled.div`
 
 export const StyledDialog = styled.dialog`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 10%;
+  border: none;
+  //transform: translate(-50%, -50%);
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -54,10 +54,14 @@ export const CancelButton = styled.button`
 `;
 
 export const ConfirmButton = styled.button`
-  background: #d9534f;
+  background: ${(props) => props.$buttonColor || "#d9534f"};
   color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+export const BodyContent = styled.div`
+  margin: 16px;
 `;

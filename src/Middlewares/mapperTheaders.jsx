@@ -16,6 +16,9 @@ export default function mapperTheaders(
           if (prop === "created_at") {
             return <Th key={prop}>Data de registro</Th>;
           }
+          if (prop === "benefit_situation") {
+            return <Th key={prop}>Situação do benefício</Th>;
+          }
           if (prop === "NdaFicha") {
             return <Th key={prop}>N°</Th>;
           }
@@ -40,6 +43,12 @@ export default function mapperTheaders(
       return "NIS/CPF";
     } else if (theaders === "created_at") {
       return "Data de registro";
+    } else if (theaders === "user") {
+      return "Nome de usuário";
+    } else if (theaders === "password") {
+      return "Senha";
+    } else if (theaders === "benefit_situation") {
+      return "Situação do benefício";
     } else {
       return theaders;
     }

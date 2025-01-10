@@ -13,26 +13,32 @@ import { useEffect } from "react";
 import usePessoa from "@/hooks/useFormContext/usePessoa";
 import useMessageContext from "@/hooks/useMessageContext";
 import useTriggerContext from "@/hooks/useTriggerContext";
+import useAuthContext from "@/hooks/useAuthContext";
 
 export default function Form({
   Legend,
   textFields,
   selectFields,
   handleSubmit,
+  textButton,
 }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const { formData, setFormData } = useFormContext();
   const { setMessageContent, setTypeMessage } = useMessageContext();
   const { activateTrigger } = useTriggerContext();
+  const { access } = useAuthContext();
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     // Remove pontos e hífens do campo NIS/CPF
-    const cleanData = {
-      ...formData,
-      NIS_CPF: formData.NIS_CPF.replace(/\D/g, ""),
-    };
+    const cleanData = formData.NIS_CPF
+      ? {
+          ...formData,
+          NIS_CPF: formData.NIS_CPF.replace(/\D/g, ""),
+        }
+      : formData;
     handleSubmit(
       cleanData,
       setFormData,
@@ -40,7 +46,8 @@ export default function Form({
       navigate,
       activateTrigger,
       setMessageContent,
-      setTypeMessage
+      setTypeMessage,
+      access
     );
   };
 
@@ -65,8 +72,12 @@ export default function Form({
   return (
     <form onSubmit={onSubmit}>
       {Legend && <StyledLegend>{Legend}</StyledLegend>}
-      {handleFields(textFields, selectFields, id)}
-      <Button type="submit">{id ? "Editar ficha" : "Criar ficha"}</Button>
+      {handleFields(textFields, selectFields, id, access)}
+      {textButton ? (
+        <Button type="submit">{textButton}</Button>
+      ) : (
+        <Button type="submit">{id ? "Editar ficha" : "Criar ficha"}</Button>
+      )}
     </form>
   );
 }

@@ -7,18 +7,31 @@ import loadChoices from "./useChoices";
 import handleChange from "./handleChange";
 import { useNavigate, useParams } from "react-router-dom";
 import useMessageContext from "@/hooks/useMessageContext";
+import handleType from "./handleType";
+import useFichaContext from "@/hooks/useFichaContext";
 
-export default function handleFields(textFields, selectFields, id) {
+export default function handleFields(textFields, selectFields, id, access) {
   // Create a navigate
   const navigate = useNavigate();
   // State for selectField choices
   const [choices, setChoices] = useState({});
   // States from context
   const { formData, setFormData } = useFormContext();
+  const { fetchAções, fetchStatus, fetchBenefitSituations } = useFichaContext();
 
   // handleling the choices
   useEffect(() => {
-    loadChoices(selectFields, setChoices);
+    async function fetchChoices() {
+      await loadChoices(
+        selectFields,
+        setChoices,
+        fetchAções,
+        fetchStatus,
+        fetchBenefitSituations
+      );
+    }
+
+    fetchChoices();
   }, [selectFields]);
 
   // JSX Return
@@ -40,11 +53,13 @@ export default function handleFields(textFields, selectFields, id) {
         label={refinedField}
         required={true}
         placeholder={`Digite as informações de ${refinedField}...`}
-        onChange={(e) => handleChange(e, formData, setFormData, navigate, id)}
+        onChange={(e) =>
+          handleChange(e, formData, setFormData, navigate, id, access)
+        }
         value={formData[field]}
-        type={isSelect ? "select" : "text"} // Define o tipo do campo
+        type={handleType(field, isSelect)} // Define o tipo do campo
         options={choices ? choices[field] : null}
-        disabled={handleDisabled(field, formData)}
+        //disabled={handleDisabled(field, formData)}
         note={
           isDocType
             ? "Enquanto um tipo de documento não for selecionado, você não pode preencher o restante do formulário!"
