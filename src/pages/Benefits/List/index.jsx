@@ -27,8 +27,10 @@ import useModalTriggerContext from "@/hooks/useModalTriggerContext";
 import GenericModal from "@/components/Modal";
 import useTriggerContext from "@/hooks/useTriggerContext";
 import useMessageContext from "@/hooks/useMessageContext";
+import useAuthContext from "@/hooks/useAuthContext";
 
 function TrPessoa({ pessoa }) {
+  const { access } = useAuthContext();
   const { activateModalTrigger, modalTrigger } = useModalTriggerContext();
   const { setMessageContent, setTypeMessage } = useMessageContext();
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ function TrPessoa({ pessoa }) {
   const [url, setUrl] = useState(null);
 
   useEffect(() => {
-    handleIcon(nome).then((path) => {
+    handleIcon(nome, access).then((path) => {
       setUrl(path); // Atualiza a URL no estado
     });
   }, []);
@@ -127,7 +129,11 @@ function TrPessoa({ pessoa }) {
           textButton="Encerrar"
           onConfirm={async () => {
             activateModalTrigger();
-            const success = await handleInvestigation([pessoa.NIS_CPF], false);
+            const success = await handleInvestigation(
+              [pessoa.NIS_CPF],
+              false,
+              access
+            );
             if (success) {
               setMessageContent("Averiguação da pessoa concluída com sucesso!");
               setTypeMessage("success");
@@ -141,6 +147,7 @@ function TrPessoa({ pessoa }) {
 }
 
 export default function List() {
+  const { access } = useAuthContext();
   const { setMessageContent, setTypeMessage } = useMessageContext();
   const { updatedTrigger } = useTriggerContext();
   const { fetchAllPessoas, loading } = useFichaContext();
@@ -169,7 +176,7 @@ export default function List() {
 
   const handleSave = async () => {
     if (selectedPeople) {
-      const success = await handleInvestigation(selectedPeople);
+      const success = await handleInvestigation(selectedPeople, true, access);
       if (success) {
         setMessageContent(
           "Pessoa adicionada a lista de averiguação com sucesso!"
@@ -216,7 +223,7 @@ export default function List() {
           </HeaderList>
           <tbody>
             {listPessoas.map((pessoa) => (
-              <TrPessoa key={pessoa.id} pessoa={pessoa} />
+              <TrPessoa key={pessoa.NIS_CPF} pessoa={pessoa} />
             ))}
           </tbody>
         </MainList>
