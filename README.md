@@ -13,7 +13,7 @@
 
 - [Motivação](#motivação)
 - [Guia de uso](#guia-de-uso)
-- [Versões](#versões)
+- [Versões](#atualizações)
 
 ## Motivação
 
@@ -27,13 +27,14 @@ Sou muitíssimo grato a ti que me destes atenção ao ler este textinho!
 
 ## Guia de uso
 
-A aplicação como um todo está dividida em 5 grandes rotas:
+A aplicação como um todo está dividida respectivamente em 6 grandes rotas:
 
 - **[Fila](#a-fila)**
 - **[Livro de atendimento](#o-formulário)**
+- **[Gestão de benefícios](#gestão-de-benefícios-a-partir-da-versão-20)** (a partir da versão 2.0)
 - **[Relatórios](#relatórios)**
 - **[Pessoas registradas](#pessoas-registradas)**
-- **Atualizações (v1.1)**
+- **[Atualizações](#atualizações)**
 
 Cada rota tem uma função totalmente úncia, no entanto, a maioria delas depende de alguns grandes componentes em comum, que são a `Table` e o `Form`. Além de que todo componente <i>Stateful</i> está ligado aos contextos, assim como mostra o esquema de árvore no arquivo [main.jsx](/src/main.jsx) (a partir da versão 1.1).
 
@@ -67,7 +68,11 @@ Esta seção reúne todas os registros de pessoas que já foram criadas na base 
 
 ![Pessoas registradas](/screenshots/pessoas-registradas.png)
 
-## Versões:
+### Gestão de benefícios (a partir da versão 2.0):
+
+Ao clicar no "+" no topo da página um [`Modal`](/src/components/Modal/index.jsx) será chamado e exibirá a página de [`Pessoas Registradas`](/src/pages/People/index.jsx), citada logo acima desse tópico. O intuito é que você selecione a pessoa que você deseja colocar na lista de averiguação.
+
+## Atualizações:
 
 ### 1.0 (lançamento):
 
@@ -84,3 +89,9 @@ Esta seção reúne todas os registros de pessoas que já foram criadas na base 
   - Melhorias na performance em geral;
   - Melhoria no esquema de mensagens para uma comunicação mais eficiente;
   - Criação de uma página dedicada exclusivamente às atualizações do sistema;
+
+### 2.0 (restrição de acesso com login e WebSockets):
+
+- Comunicação em tempo real - não se faz mais necessário recarregar a página para ver alterções no banco de dados (desde que você tenha configurado o socket no back-end também);
+- Restrição de acesso - exigência de login para ter acesso as rotas;
+- Aba <b>Gestão de benefícios</b> incrementada as pages

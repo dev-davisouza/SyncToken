@@ -41,7 +41,6 @@ function App() {
   useEffect(() => {
     // Escutar eventos do WebSocket
     socket.on("update-table", (msg) => {
-      console.log(msg);
       activateTrigger();
     });
     return () => {

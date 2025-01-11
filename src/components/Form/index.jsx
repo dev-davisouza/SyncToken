@@ -31,7 +31,6 @@ export default function Form({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     // Remove pontos e hífens do campo NIS/CPF
     const cleanData = formData.NIS_CPF
       ? {

@@ -29,7 +29,6 @@ export default function People({ isForSelection = false }) {
   useEffect(() => {
     async function getAllPessoas() {
       const nameFilter = searchValue ? `Nome=${searchValue}` : "";
-      setLoading(true);
       const [response, count] = isForSelection
         ? await fetchAllPessoas(`${nameFilter}&isUnderInvestigation=0`)
         : await fetchAllPessoas(`${nameFilter}`);

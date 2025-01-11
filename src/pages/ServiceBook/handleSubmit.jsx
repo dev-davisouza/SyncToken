@@ -24,7 +24,6 @@ export default async function handleSubmit(
     : `${apiPath}/pessoas-all/`;
 
   try {
-    console.log(data);
     const response = await fetch(url, {
       method: method,
       headers: {
