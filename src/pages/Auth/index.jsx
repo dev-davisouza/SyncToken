@@ -14,7 +14,7 @@ export default function Auth() {
     useMessageContext();
   const navigate = useNavigate();
   const { formData, setFormData } = useFormContext();
-  const { setAccess, isAuth } = useAuthContext();
+  const { setAccess, isAuth, setUserName } = useAuthContext();
 
   useEffect(() => {
     if (isAuth) {
@@ -42,6 +42,7 @@ export default function Auth() {
           setAccess(null);
         } else {
           setAccess(`Bearer ${json.accessToken}`);
+          setUserName(user);
           navigate(Links.HOME);
           // Dando boas vindas ao usuário recém logado:
           setTypeMessage("info");

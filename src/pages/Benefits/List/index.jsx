@@ -30,19 +30,43 @@ import useMessageContext from "@/hooks/useMessageContext";
 import useAuthContext from "@/hooks/useAuthContext";
 
 function TrPessoa({ pessoa }) {
-  const { access } = useAuthContext();
+  const { access, userName } = useAuthContext();
   const { activateModalTrigger, modalTrigger } = useModalTriggerContext();
   const { setMessageContent, setTypeMessage } = useMessageContext();
   const navigate = useNavigate();
 
   const [nome, setNome] = useState(pessoa.Nome);
   const [url, setUrl] = useState(null);
+  const [selectedPessoa, setSelectedPessoa] = useState(null); // Estado para pessoa selecionada
 
   useEffect(() => {
     handleIcon(nome, access).then((path) => {
       setUrl(path); // Atualiza a URL no estado
     });
   }, []);
+
+  const handleEncerrar = () => {
+    setSelectedPessoa(pessoa); // Define a pessoa no estado local
+    activateModalTrigger(); // Abre o modal
+  };
+
+  const handleConfirmEncerrar = async () => {
+    if (selectedPessoa) {
+      const success = await handleInvestigation(
+        [selectedPessoa.NIS_CPF],
+        false,
+        access
+      );
+
+      if (success) {
+        setTypeMessage("success");
+        setMessageContent(
+          `Averiguação de <b>${selectedPessoa.Nome}</b> concluída com sucesso!`
+        );
+      }
+    }
+    activateModalTrigger(); // Fecha o modal
+  };
 
   return (
     <>
@@ -81,7 +105,7 @@ function TrPessoa({ pessoa }) {
               <span>
                 <b>CPF/NIS</b>:
                 <CPFNISValue
-                  title="Acesso o formulário da pessoa"
+                  title="Acesso ao formulário da pessoa"
                   onClick={() =>
                     navigate(`${Links.CRIAR_FICHA}/${pessoa.NIS_CPF}`)
                   }
@@ -112,7 +136,7 @@ function TrPessoa({ pessoa }) {
               </ActionButton>
               <ActionButton
                 className="encerrar" // Encerrar
-                onClick={() => activateModalTrigger()}
+                onClick={handleEncerrar}
               >
                 <IoIosCheckmarkCircle size={18} />
               </ActionButton>
@@ -121,27 +145,17 @@ function TrPessoa({ pessoa }) {
         </StatusActionContainer>
       </Tr>
 
-      {
+      {modalTrigger && selectedPessoa && userName && (
         <GenericModal
           open={modalTrigger}
-          bodyContent="Tem certeza que deseja esse caso como resolvido?"
+          bodyContent={`<b>${userName}</b>, Tem certeza que deseja encerrar a averiguação de <b>${selectedPessoa?.Nome}</b>?`}
           onClose={activateModalTrigger}
           textButton="Encerrar"
-          onConfirm={async () => {
-            activateModalTrigger();
-            const success = await handleInvestigation(
-              [pessoa.NIS_CPF],
-              false,
-              access
-            );
-            if (success) {
-              setMessageContent("Averiguação da pessoa concluída com sucesso!");
-              setTypeMessage("success");
-            }
-          }}
+          onConfirm={handleConfirmEncerrar}
           buttonColor="#007bff"
+          html
         />
-      }
+      )}
     </>
   );
 }
@@ -200,7 +214,7 @@ export default function List() {
         <AddPersonButton onClick={handleOpenModal}>
           <IoMdAdd
             style={{
-              fontSize: "35px",
+              fontSize: "inherit",
             }}
           />
         </AddPersonButton>

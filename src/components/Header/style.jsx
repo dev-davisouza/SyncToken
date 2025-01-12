@@ -90,9 +90,15 @@ export const StyledNavItem = styled.li`
 
   @media (max-width: 768px) {
     font-size: 18px;
+    &.active {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.8); /* Destaque para o item ativo */
+    }
   }
 
   @media (max-width: 480px) {
     font-size: 18px;
+    &.active {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.8); /* Destaque para o item ativo */
+    }
   }
 `;

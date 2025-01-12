@@ -6,7 +6,7 @@ import {
   Note,
   NoteHeader,
   NoteBody,
-  VersionsContainer,
+  RepositoryContainer,
 } from "./styles";
 
 export default function Updates() {
@@ -23,6 +23,21 @@ export default function Updates() {
         </UpdateLink>
         . A documentação mais recente pode ser encontrada abaixo.
       </Subtitle>
+      <RepositoryContainer>
+        {/* Card gerado pelo GitHub Readme Stats */}
+        <a href="https://github.com/dev-davisouza/SyncToken" target="_blank">
+          <img
+            src="https://github-readme-stats.vercel.app/api/pin/?username=dev-davisouza&repo=SyncToken"
+            alt="SyncToken GitHub Repo"
+            style={{
+              borderRadius: "8px",
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              maxWidth: "100%",
+              marginBottom: "2rem",
+            }}
+          />
+        </a>
+      </RepositoryContainer>
       <Note>
         <NoteHeader>Nota</NoteHeader>
         <NoteBody>
@@ -30,9 +45,6 @@ export default function Updates() {
           SyncToken!
         </NoteBody>
       </Note>
-      {/*   <VersionsContainer>
-        <h3>1.0 (Lançamento)</h3>
-      </VersionsContainer> */}
     </UpdateContainer>
   );
 }

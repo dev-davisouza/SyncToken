@@ -3,13 +3,16 @@ import AuthContext from "@/context/AuthContext";
 import fetchAuth from "./fetchAuth";
 
 export default function useAuthContext() {
-  const { isAuth, setIsAuth, access, setAccess } = useContext(AuthContext);
+  const { isAuth, setIsAuth, access, setAccess, userName, setUserName } =
+    useContext(AuthContext);
 
   return {
     isAuth,
     setIsAuth,
     access,
     setAccess,
+    userName,
+    setUserName,
     /* fetchAuth: async (
       domain,
       path = "",

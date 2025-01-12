@@ -7,6 +7,7 @@ AuthContext.displayName = "AuthContext";
 export function AuthProvider({ children }) {
   const [access, setAccess] = useState(null);
   const [isAuth, setIsAuth] = useState(access ? true : false);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     if (access) {
@@ -17,7 +18,9 @@ export function AuthProvider({ children }) {
   }, [access]);
 
   return (
-    <AuthContext.Provider value={{ isAuth, setIsAuth, access, setAccess }}>
+    <AuthContext.Provider
+      value={{ isAuth, setIsAuth, access, setAccess, userName, setUserName }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -102,17 +102,20 @@ export default function Filter({
             <Content>
               <ContentTitle>Selecione o período</ContentTitle>
               <List>
-                {periods.map((date) => (
-                  <ListItem key={date}>
-                    <LabelCheckbox>
-                      <Checkbox
-                        checked={selectedDates.includes(date)}
-                        onChange={() => handleDateSelection(date)}
-                      />
-                      {date}
-                    </LabelCheckbox>
-                  </ListItem>
-                ))}
+                {periods &&
+                  periods.map((date) => {
+                    return (
+                      <ListItem key={date}>
+                        <LabelCheckbox>
+                          <Checkbox
+                            checked={selectedDates.includes(date)}
+                            onChange={() => handleDateSelection(date)}
+                          />
+                          {date}
+                        </LabelCheckbox>
+                      </ListItem>
+                    );
+                  })}
               </List>
             </Content>
           }

@@ -10,6 +10,7 @@ import Modal from "../Modal";
 import handleMobile from "./handles/handleMobile";
 import Loading from "@/components/Loader";
 import { Links } from "@/context/Links";
+import useAuthContext from "@/hooks/useAuthContext";
 
 export default function Table({
   isForSelection,
@@ -22,6 +23,7 @@ export default function Table({
 }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const { userName } = useAuthContext();
 
   const hook = {};
   if (hooks) {
@@ -58,8 +60,9 @@ export default function Table({
           open={isModalOpen}
           onClose={handleCloseModal}
           onConfirm={handleConfirmDelete}
-          bodyContent="Tem certeza que deseja excluir este registro?"
+          bodyContent={`<b>${userName}</b>, Tem certeza que deseja excluir este registro?`}
           textButton="Excluir"
+          html
         />
         <StyledCaption>{caption && caption}</StyledCaption>
         <StyledFlexContainer>

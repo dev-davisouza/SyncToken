@@ -55,7 +55,7 @@ export default function Form({
     // Define a função assíncrona dentro do useEffect
     async function fetchPessoa() {
       if (id) {
-        await usePessoa(id, setFormData, navigate);
+        await usePessoa(id, setFormData, navigate, access);
       }
     }
     // Chama a função

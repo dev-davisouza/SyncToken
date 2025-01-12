@@ -35,7 +35,7 @@ export const Note = styled.blockquote`
   border-left-style: solid;
   padding: 20px 45px 20px 26px;
   margin-bottom: 30px;
-  margin: 40px 0 0 -20px;
+  margin: 20px 0 0 -20px;
 `;
 
 export const NoteHeader = styled.p`
@@ -48,10 +48,6 @@ export const NoteBody = styled.p`
   margin-top: 0;
 `;
 
-export const VersionsContainer = styled.div`
-  all: unset;
-  display: block;
-  h3 {
-    font-size: 25px;
-  }
+export const RepositoryContainer = styled.div`
+  margin: 4px 0;
 `;

@@ -17,6 +17,7 @@ export default function Modal({
   bodyContent,
   textButton,
   buttonColor = "#d9534f",
+  html = false,
 }) {
   if (!open) return null;
 
@@ -28,7 +29,12 @@ export default function Modal({
           <CloseButton onClick={onClose}>
             <CgClose />
           </CloseButton>
-          <BodyContent>{bodyContent}</BodyContent>
+          {html ? (
+            <BodyContent dangerouslySetInnerHTML={{ __html: bodyContent }} />
+          ) : (
+            <BodyContent>{bodyContent}</BodyContent>
+          )}
+
           <Actions>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <ConfirmButton $buttonColor={buttonColor} onClick={onConfirm}>

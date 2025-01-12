@@ -43,7 +43,7 @@ export default function Message({ interval = 3000, bolder = false }) {
           {bolder ? (
             <BolderMsg dangerouslySetInnerHTML={{ __html: messageContent }} />
           ) : (
-            <p>{messageContent}</p>
+            <p dangerouslySetInnerHTML={{ __html: messageContent }} />
           )}
         </MessageContent>
       )}
