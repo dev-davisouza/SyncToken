@@ -7,7 +7,7 @@ export default async function usePessoa(
   access
 ) {
   // Faça o fetch
-  const response = await fetch(`${apiPath}/pessoas-all/${NIS_CPF}`, {
+  const response = await fetch(`${apiPath}/pessoas-all/${NIS_CPF}/`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",

@@ -1,21 +1,20 @@
 import { io } from "socket.io-client";
 import { apiPath } from "@/context/Links";
-
-const socket = io(apiPath);
-
-// Evento para verificar a conexão
-socket.on("connect", () => {
-  /* console.log("Conectando ao servidor: ", socket.id); */
+/*
+const socket = io(apiPath, {
+  path: "/ws/socket.io/",
+  transports: ["websocket"], // Garante a compatibilidade entre transporte websocket e polling
 });
 
-// Exemplo: Enviar mensagem para o servidor
-export const enviarMensagem = (msg) => {
-  socket.emit("Mensagem do capira", msg);
-};
-
-// Exemplo: Receber resposta do servidor
-socket.on("respostinha do pretu", (dados) => {
-  /* console.log("Resposta do servidor negru: ", dados); */
+// Verificar conexão
+ socket.on("connect", () => {
+  console.log("Conectado ao servidor WebSocket:", socket.id);
 });
+
+// Lidar com erros
+socket.on("connect_error", (error) => {
+  console.error("Erro de conexão com o WebSocket:", error);
+}); 
 
 export default socket;
+*/

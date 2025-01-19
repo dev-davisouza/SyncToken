@@ -22,7 +22,7 @@ export function FichaProvider({ children }) {
 
   useEffect(() => {
     access &&
-      fetch(`${apiPath}/pessoas/?page_size=${perPage}`, {
+      fetch(`${apiPath}/pessoas/?page_size=${perPage}/`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -69,7 +69,3 @@ export function FichaProvider({ children }) {
 }
 
 export default FichaContext;
-
-/* NA BOA MANO
-   DE REPENDE ESTOUROU UMA INFINIDADE DE ERROS
-*/

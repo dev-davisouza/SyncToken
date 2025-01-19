@@ -8,7 +8,7 @@ export default async function fetchAllPessoas(
   try {
     const response = filterFetchAll
       ? await fetch(
-          `${apiPath}/pessoas-all/?page_size=${perPage}&${filterFetchAll}`,
+          `${apiPath}/pessoas-all/?page_size=${perPage}&${filterFetchAll}/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export default async function fetchAllPessoas(
             },
           }
         )
-      : await fetch(`${apiPath}/pessoas-all/?page_size=${perPage}`, {
+      : await fetch(`${apiPath}/pessoas-all/?page_size=${perPage}/`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: access,

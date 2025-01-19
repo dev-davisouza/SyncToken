@@ -2,7 +2,7 @@ import { apiPath } from "@/context/Links";
 
 export default async function fetchModel(access) {
   try {
-    const response = await fetch(`${apiPath}/model`, {
+    const response = await fetch(`${apiPath}/model/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

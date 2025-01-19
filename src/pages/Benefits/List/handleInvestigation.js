@@ -11,8 +11,8 @@ export default async function handleInvestigation(
 ) {
   try {
     selectedPeople.forEach(async (NIS_CPF) => {
-      await fetch(`${apiPath}/pessoas-all/${NIS_CPF}`, {
-        method: "PUT",
+      await fetch(`${apiPath}/pessoas-all/${NIS_CPF}/`, {
+        method: "PATCH",
         headers: {
           Authorization: access,
           "Content-Type": "application/json",

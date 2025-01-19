@@ -8,7 +8,7 @@ export default async function handleRemove(
   setTypeMessage,
   access
 ) {
-  const response = await fetch(`${apiPath}/pessoas-all/${NIS_CPF}`, {
+  const response = await fetch(`${apiPath}/pessoas-all/${NIS_CPF}/`, {
     headers: {
       Authorization: access,
       "Content-type": "application/json",

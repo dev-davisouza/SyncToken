@@ -3,7 +3,7 @@ import { apiPath } from "@/context/Links";
 export default async function fetchFichasByDate(date, perPage = 10, access) {
   try {
     const response = await fetch(
-      `${apiPath}/relatorios/${date}/?pessoas_page_size=${perPage}`,
+      `${apiPath}/relatorios/${date}/?pessoas_page_size=${perPage}/`,
       {
         method: "GET",
         headers: {

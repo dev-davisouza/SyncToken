@@ -30,7 +30,7 @@ export default async function handleSubmit(
         "Content-type": "application/json",
         Authorization: access,
       },
-      body: JSON.stringify({ id: data.NIS_CPF, ...data }),
+      body: JSON.stringify({ ...data }),
     });
 
     if (response.ok) {

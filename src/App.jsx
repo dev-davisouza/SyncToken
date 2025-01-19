@@ -10,9 +10,9 @@ import Reports from "./pages/Reports";
 import ReportDetail from "./pages/ReportDetail";
 import People from "./pages/People";
 import Benefits from "./pages/Benefits";
-import socket from "@/socket/socket-client";
+/* import socket from "@/socket/socket-client";
 import { useEffect } from "react";
-import useTriggerContext from "./hooks/useTriggerContext";
+import useTriggerContext from "./hooks/useTriggerContext"; */
 import Auth from "./pages/Auth";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -37,7 +37,7 @@ const MainContainer = styled.main`
 `;
 
 function App() {
-  const { activateTrigger } = useTriggerContext();
+  /* const { activateTrigger } = useTriggerContext();
   useEffect(() => {
     // Escutar eventos do WebSocket
     socket.on("update-table", (msg) => {
@@ -46,7 +46,7 @@ function App() {
     return () => {
       socket.off("update-table");
     };
-  }, []);
+  }, []); */
   return (
     <AppContainer>
       <GlobalStyles />

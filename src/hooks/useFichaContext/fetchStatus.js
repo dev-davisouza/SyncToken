@@ -1,7 +1,7 @@
 import { apiPath } from "@/context/Links";
 
 export default async function fetchStatus(access) {
-  const response = await fetch(`${apiPath}/status_choices`, {
+  const response = await fetch(`${apiPath}/status_choices/`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",

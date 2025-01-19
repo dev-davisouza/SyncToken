@@ -25,23 +25,24 @@ export default function Auth() {
     const { user, password } = formData;
 
     try {
-      const response = await fetch(`${apiPath}/digitadores/login`, {
+      const response = await fetch(`${apiPath}/login/`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          user: user,
+          username: user,
           password: hash(password),
         }),
       });
 
       if (response.ok) {
         const json = await response.json();
-        if (!json.accessToken) {
+        if (!json.access) {
           setAccess(null);
         } else {
-          setAccess(`Bearer ${json.accessToken}`);
+          console.log(json.access);
+          setAccess(`Bearer ${json.access}`);
           setUserName(user);
           navigate(Links.HOME);
           // Dando boas vindas ao usuário recém logado:

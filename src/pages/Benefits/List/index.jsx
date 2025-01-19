@@ -31,6 +31,7 @@ import useAuthContext from "@/hooks/useAuthContext";
 
 function TrPessoa({ pessoa }) {
   const { access, userName } = useAuthContext();
+  const { activateTrigger } = useTriggerContext();
   const { activateModalTrigger, modalTrigger } = useModalTriggerContext();
   const { setMessageContent, setTypeMessage } = useMessageContext();
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ function TrPessoa({ pessoa }) {
       );
 
       if (success) {
+        activateTrigger();
         setTypeMessage("success");
         setMessageContent(
           `Averiguação de <b>${selectedPessoa.Nome}</b> concluída com sucesso!`
@@ -163,7 +165,7 @@ function TrPessoa({ pessoa }) {
 export default function List() {
   const { access } = useAuthContext();
   const { setMessageContent, setTypeMessage } = useMessageContext();
-  const { updatedTrigger } = useTriggerContext();
+  const { updatedTrigger, activateTrigger } = useTriggerContext();
   const { fetchAllPessoas, loading } = useFichaContext();
   // Estado local da lista de pessoas
   const [listPessoas, setListPessoas] = useState([]);
@@ -192,10 +194,11 @@ export default function List() {
     if (selectedPeople) {
       const success = await handleInvestigation(selectedPeople, true, access);
       if (success) {
+        activateTrigger();
+        setTypeMessage("success");
         setMessageContent(
           "Pessoa adicionada a lista de averiguação com sucesso!"
         );
-        setTypeMessage("success");
       }
       handleCloseModal();
     } else {

@@ -30,7 +30,7 @@ export default function People({ isForSelection = false }) {
     async function getAllPessoas() {
       const nameFilter = searchValue ? `Nome=${searchValue}` : "";
       const [response, count] = isForSelection
-        ? await fetchAllPessoas(`${nameFilter}&isUnderInvestigation=0`)
+        ? await fetchAllPessoas(`${nameFilter}isUnderInvestigation=0`)
         : await fetchAllPessoas(`${nameFilter}`);
 
       if (nameFilter && count == 0) {

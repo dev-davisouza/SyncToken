@@ -2,7 +2,7 @@ import { apiPath } from "@/context/Links";
 
 export default async function fetchPeriods(access) {
   try {
-    const response = await fetch(`${apiPath}/periods`, {
+    const response = await fetch(`${apiPath}/periods/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",

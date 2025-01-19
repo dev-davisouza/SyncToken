@@ -20,7 +20,7 @@ export function RelatorioProvider({ children }) {
   // Get dos relatórios
   useEffect(() => {
     access &&
-      fetch(`${apiPath}/relatorios/?page_size=${perPage}`, {
+      fetch(`${apiPath}/relatorios/?page_size=${perPage}/`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",

@@ -29,7 +29,7 @@ export default function handleChange(
 
     // Verifica se o CPF tem 11 dígitos e realiza a consulta
     if (cleanValue.length === 11) {
-      fetch(`${apiPath}/pessoas-all/${cleanValue}`, {
+      fetch(`${apiPath}/pessoas-all/${cleanValue}/`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",

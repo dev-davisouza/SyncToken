@@ -11,12 +11,12 @@ export default async function fetchRelatoriosWithFilter(
 
     // Monta a URL com os parâmetros serializados
     const response = await fetch(
-      `${apiPath}/relatorios/?page_size=${perPage}&${queryString}`,
+      `${apiPath}/relatorios/?page_size=${perPage}&${queryString}/`,
       {
         method: "GET",
         headers: {
-          "Content-type": "application/json",
           Authorization: access,
+          "Content-type": "application/json",
         },
       }
     );
