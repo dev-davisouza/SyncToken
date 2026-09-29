@@ -1,0 +1,22 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "baseUrl": "../../../../../..",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "emitDeclarationOnly": false,
+    "incremental": true,
+    "tsBuildInfoFile": "/home/davi/Learning/Programming/React + TS/SyncTokenTS (in-building)/node_modules/vitest/dist/chunks/tsconfig.tmp.tsbuildinfo"
+  }
+}
